@@ -32,6 +32,12 @@ def get_value(name,data):
     for i in data:
         if i['name'] == n:
             return i['value']
+            
+def set_value(name,data,value):
+    n='['+name+']'
+    for i in data:
+        if i['name'] == n:
+            i['value'] = value
 
 def get_val_file(name,filename):
     data=read_input(filename)
@@ -202,4 +208,28 @@ def read_rvtj(filename='RVTJ'):
                 
     return model_info
 
+def vadat_mesa(vadat='VADAT',log_fold='LOGS/',model=1,tau=20.0):
+    import mesaPlot as mp
+    
+    oldv=read_input(vadat)
+    
+    m=mp.MESA()
+    m.log_fold=log_fold
+    m.loadHistory()
+    m.loadProfile(num=model)
+    ind_hist=(m.hist.model_number==model)
+    ind_prof=np.argmin(np.abs(m.prof.tau-tau))
+    
+    set_value('VINF',oldv,1.5*m.hist.surf_escape_v[ind_hist][0]/(100.0*1000.0))
+    set_value('MDOT',oldv,10**m.hist.log_abs_mdot[ind_hist][0])
+    set_value('LSTAR',oldv,10**m.hist.log_L[ind_hist][0])
+    set_value('MASS',oldv,m.hist.star_mass[ind_hist][0])
+    set_value('TEFF',oldv,10**m.prof.logT[ind_prof])
+    set_value('LOGG',oldv,10**m.prof.log_g[ind_prof])
+    set_value('RSTAR',oldv,(10**m.hist.log_R[ind_hist][0])*6.9598)
+    set_value('RMAX',oldv,(10**m.hist.log_R[ind_hist][0])*6.9598*1.1) #TODO: Check what rmax means
+    
+    #TODO: Set abundances
+    write_input('VADAT_MESA',oldv)
+    return oldv
 
