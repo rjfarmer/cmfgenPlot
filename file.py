@@ -298,7 +298,8 @@ def freq2nm(freq):
     return freq2wave(freq)*10**9
 
 def plot_obs(filename='obs_fin_5',model_spec='MODEL_SPEC',
-            trans=False,transition_filename="../TRANS_INFO"):
+            trans=False,transition_filename="../TRANS_INFO",
+            norm_cont=False,file_cont='obs_cont'):
     x=read_obs_fin(filename)
     freq=x[0]
     jank=x[1]
@@ -308,6 +309,12 @@ def plot_obs(filename='obs_fin_5',model_spec='MODEL_SPEC',
     fig=plt.figure(figsize=(12,12))
     ax=fig.add_subplot(111)
     
+    if norm_cont:
+        cont=read_obs_fin(file_cont)
+        waveCont=freq2A(cont[0])
+        contInterp=np.interp(wave,waveCont,cont[1])
+        jank=jank/contInterp
+        
     ax.plot(np.log10(wave),np.log10(jank))
     
     if trans:
@@ -343,6 +350,6 @@ def plot_trans(filename="../TRANS_INFO",fig=None,ax=None):
     
     for i in np.linspace(0,np.size(t)-1,100):
         ax.axvline(x=np.log10(t[int(i)]['lam']),linestyle='--',color='grey',alpha=0.8)
-    
+        
     
 plot_obs(trans=True)
