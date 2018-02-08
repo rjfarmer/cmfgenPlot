@@ -1,4 +1,32 @@
 import numpy as np
+import matplotlib.pyplot as plt
+
+#Constants cmfgen uses:
+SPEED_OF_LIGHT        =2.99792458E+10 	#Exact cm/s
+ELECTRON_VOLT         =1.60217733E-12      #ergs
+GRAVITATIONAL_CONSTANT=6.67259E-08		#cm^3/gm/s
+PLANCKS_CONSTANT      =6.626075E-27	#erg sec
+ATOMIC_MASS_UNIT      =1.660540E-24	#gm
+ELECTRON_MASS         =9.109389E-28	#gm
+BOLTZMANN_CONSTANT    =1.380658E-16	#erg/K
+STEFAN_BOLTZ          =5.670400E-05	#ergs/cm^2/K^4
+RYDBERG_INF     =109737.31534D0		#/cm
+RYDBERG_HYDROGEN=109677.6D0		#/cm
+RYDBERG_HELIUM  =109722.3D0		#/cm
+RYDBERG_CARBON  =109732.3D0		#/cm
+RYDBERG_NITROGEN=109733.0D0		#/cm
+RYDBERG_OXYGEN  =109733.5D0		#/cm
+MASS_SUN=1.989E+33  			#gm
+RAD_SUN =6.9599E+10			#cm (changed 7-Jan-2008)
+LUM_SUN =3.826E+33				#erg/s
+TEFF_SUN=5770.0D0				#K
+ASTRONOMICAL_UNIT=1.49597892E+13		#cm
+PARSEC           =3.0856E+18       	#cm
+JANSKY           =1.0E-23			#ergs/cm^2/s/Hz
+PI=3.141592653589793238462643D0
+FUN_PI=3.141592653589793238462643D0
+SECS_IN_YEAR=31557600.0D0     		#365.25*24*60*60
+
 
 def read_input(filename):
     with open(filename,'r') as f:
@@ -24,8 +52,7 @@ def write_input(filename,data):
             print('{0: <20}'.format(i['value']),'{0: <20}'.format(i['name']),i['comment'],file=f)
 
 def read_corr_sum(filename='CORRECTION_SUM'):
-    out=np.genfromtxt(filename,skip_header=5,names=['depth','100','10','1','0p1','0p01','0p001','0p0001'],dtype=None)
-    return out
+    return np.genfromtxt(filename,skip_header=5,names=['depth','100','10','1','0p1','0p01','0p001','0p0001'],dtype=None)
 
 def get_value(name,data):
     n='['+name+']'
@@ -217,7 +244,8 @@ def vadat_mesa(vadat='VADAT',log_fold='LOGS/',model=1,tau=20.0):
     m.log_fold=log_fold
     m.loadHistory()
     m.loadProfile(num=model)
-    ind_hist=(m.hist.model_number==model)
+    ind_hist=(m.hist.model_number==m.prof.model_number)
+
     ind_prof=np.argmin(np.abs(m.prof.tau-tau))
     
     set_value('VINF',oldv,1.5*m.hist.surf_escape_v[ind_hist][0]/(100.0*1000.0))
@@ -229,7 +257,89 @@ def vadat_mesa(vadat='VADAT',log_fold='LOGS/',model=1,tau=20.0):
     set_value('RSTAR',oldv,(10**m.hist.log_R[ind_hist][0])*6.9598)
     set_value('RMAX',oldv,(10**m.hist.log_R[ind_hist][0])*6.9598*1.1) #TODO: Check what rmax means
     
-    #TODO: Set abundances
+    
+    ind2=m.prof.tau<tau
+    mesa_iso=['h1','he4','c12','o16','n14','si28','s32','fe56']
+    cmfgen_iso=['HYD/X','HE/X','CARB/X','OXY/X','NIT/X','SIL/X','SUL/X','IRON/X']
+    abun=[]
+    dm=np.abs(np.ediff1d(m.prof.mass,to_end=[0]))
+    for i in mesa_iso:
+        abun.append(np.dot(dm[ind2],m.prof.data[i][ind2]))
+        
+    set_value('PHOS/X',oldv,0.0)
+    
+    #Normalise
+    abunSum=np.sum(abun)
+    for i,j in zip(cmfgen_iso,abun):
+        set_value(i,oldv,-j/abunSum)
+    
     write_input('VADAT_MESA',oldv)
     return oldv
 
+def freq2wave(freq):
+    return SPEED_OF_LIGHT/(freq*10**15)
+    
+def freq2A(freq)
+    return freq2wave(freq)*10**10   
+
+def freq2nm(freq):
+    return freq2wave(freq)*10**9
+
+def plot_obs(filename='obs_fin_5',model_spec='MODEL_SPEC',
+            trans=False,transition_filename="../TRANS_INFO"):
+    x=read_obs_fin(filename)
+    freq=x[0]
+    jank=x[1]
+    sol=299792458.0 #m/s
+    wave=freq2A(freq) #A
+    
+    fig=plt.figure(figsize=(12,12))
+    ax=fig.add_subplot(111)
+    
+    ax.plot(np.log10(wave),np.log10(jank))
+    
+    if trans:
+        plot_trans(filename=transition_filename,fig=fig,ax=ax)
+    
+    ax.set_xlabel('log10 A')
+    ax.set_ylabel('log10 Jy')
+    ax.set_ylim(-10.0,5.0)
+    plt.show()
+
+def read_obs_fin(filename='obs_fin_5'):
+    # Output in the obs folder
+    con_freq=[]
+    flux=[]
+    with open(filename,'r') as f:
+        #skip two lines
+        for i in range(2):
+            _=f.readline()
+        t=f.readline()
+        num_points=int(t.split()[-2])
+        for i in range(num_points//8+1):
+            con_freq.extend([float(j) for j in f.readline().strip().split()])
+        con_freq=np.array(con_freq)
+        
+        #skip four lines
+        for i in range(4):
+            _=f.readline()
+        for i in range(num_points//10+2):
+            flux.extend([float(j) for j in f.readline().strip().split()])
+        flux=np.array(flux)
+                
+    return con_freq,flux
+
+def read_trans(filename='../TRANS_INFO'):
+    return np.genfromtxt(filename,skip_header=5,names=['i','nl','nup','nu','lam','v','trans'],dtype=None)
+
+def plot_trans(filename="../TRANS_INFO",fig=None,ax=None):
+    if fig is None or ax is None:
+        raise ValueError("Must pass fig and ax instance")
+
+    t=read_trans(filename)
+    
+    for i in np.linspace(0,np.size(x)-1,100):
+        ax.axvline(x=np.log10(t[int(i)]['lam']),linestyle='--',color='grey',alpha=0.8)
+    
+    
+plot_obs(trans=True)
