@@ -16,12 +16,6 @@ RYDBERG_HELIUM  =109722.3E0		#/cm
 RYDBERG_CARBON  =109732.3E0		#/cm
 RYDBERG_NITROGEN=109733.0E0		#/cm
 RYDBERG_OXYGEN  =109733.5E0		#/cm
-RYDBERG_INF     =109737.31534D0		#/cm
-RYDBERG_HYDROGEN=109677.6D0		#/cm
-RYDBERG_HELIUM  =109722.3D0		#/cm
-RYDBERG_CARBON  =109732.3D0		#/cm
-RYDBERG_NITROGEN=109733.0D0		#/cm
-RYDBERG_OXYGEN  =109733.5D0		#/cm
 MASS_SUN=1.989E+33  			#gm
 RAD_SUN =6.9599E+10			#cm (changed 7-Jan-2008)
 LUM_SUN =3.826E+33				#erg/s
@@ -50,6 +44,30 @@ def read_input(filename):
             name=y[1]
             out.append({'name':name,'value':value,'comment':comment})
     return out
+    
+def readLineArray(f):
+    x=[]
+    while True:
+        #Mark start of line
+        l=f.readline().strip().split()
+        if len(l):
+            tmp=[]
+            for j in l:
+                if 'E' in j:
+                    tmp.append(float(j))
+                else:
+                    tmp.append(float(j.replace('-','E-')))
+            x.extend(tmp)
+        else:
+            break
+            
+    return np.array(x)
+            
+            
+        
+def skipLines(f,n):
+    for i in range(n):
+        _=f.readline()
     
     
 def write_input(filename,data):
@@ -116,40 +134,28 @@ def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
     flux=[]
     num_depths=int(get_val_file('ND',model_spec))
     with open(filename,'r') as f:
-        #skip two lines
-        for i in range(2):
-            _=f.readline()
-        t=f.readline()
-        num_points=int(t.split()[-2])
-        for i in range(num_points//8+2):
-            con_freq.extend([float(j) for j in f.readline().strip().split()])
-        con_freq=np.array(con_freq)
+        #skip first four lines
+        skipLines(f,4)
+        con_freq=readLineArray(f)
         
-        #skip four lines
-        for i in range(4):
-            _=f.readline()
-        for i in range(num_points//10+2):
-            flux.extend([float(j) for j in f.readline().strip().split()])
-        flux=np.array(flux)
+        skipLines(f,3)
+        flux=readLineArray(f)
         
-        output=[]
-        for i in range(8):
-            for j in range(2):
-                _=f.readline()
-            header=f.readline().strip()
-            data=[]
-            for j in range(num_depths//10+2):
-                tmp=[]
-                #Handle 3 digit exponents
-                line=f.readline().strip().split()
-                for j in line:
-                    if 'E' in j:
-                        tmp.append(float(j))
-                    else:
-                        tmp.append(float(j.replace('-','E-')))
-                data.extend(tmp)
-            output.extend([header,data])
-            
+        output={}
+        loc=f.tell()
+        while True:
+            l=f.readline.strip()
+            if len(l):
+                if ":" in l:
+                    f.seek(loc)
+                    break
+                
+                if l[0].isalpha():
+                    header=l
+                    skipLines(f,1)
+                    data=readLineArry(f)
+                    output[header]=data
+                    loc=f.tell()
         extras=[]
         lines=f.readlines()
         for i in lines:
@@ -285,7 +291,7 @@ def vadat_mesa(vadat='VADAT',log_fold='LOGS/',model=1,tau=20.0):
 def freq2wave(freq):
     return SPEED_OF_LIGHT/(freq*10**15)
     
-def freq2A(freq)
+def freq2A(freq):
     return freq2wave(freq)*10**10   
 
 def freq2nm(freq):
@@ -317,22 +323,13 @@ def read_obs_fin(filename='obs_fin_5'):
     con_freq=[]
     flux=[]
     with open(filename,'r') as f:
-        #skip two lines
-        for i in range(2):
-            _=f.readline()
-        t=f.readline()
-        num_points=int(t.split()[-2])
-        for i in range(num_points//8+1):
-            con_freq.extend([float(j) for j in f.readline().strip().split()])
-        con_freq=np.array(con_freq)
+        #skip first four lines
+        skipLines(f,4)
+        con_freq=readLineArray(f)
         
-        #skip four lines
-        for i in range(4):
-            _=f.readline()
-        for i in range(num_points//10+2):
-            flux.extend([float(j) for j in f.readline().strip().split()])
-        flux=np.array(flux)
-                
+        skipLines(f,3)
+        flux=readLineArray(f)
+
     return con_freq,flux
 
 def read_trans(filename='../TRANS_INFO'):
@@ -344,7 +341,7 @@ def plot_trans(filename="../TRANS_INFO",fig=None,ax=None):
 
     t=read_trans(filename)
     
-    for i in np.linspace(0,np.size(x)-1,100):
+    for i in np.linspace(0,np.size(t)-1,100):
         ax.axvline(x=np.log10(t[int(i)]['lam']),linestyle='--',color='grey',alpha=0.8)
     
     
