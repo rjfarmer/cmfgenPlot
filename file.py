@@ -351,5 +351,6 @@ def plot_trans(filename="../TRANS_INFO",fig=None,ax=None):
     for i in np.linspace(0,np.size(t)-1,100):
         ax.axvline(x=np.log10(t[int(i)]['lam']),linestyle='--',color='grey',alpha=0.8)
         
-    
-plot_obs(trans=True)
+def read_rosseland_lte(filename="ROSSELAND_LTE_TAB"):
+    return np.genfromtxt(filename,skip_header=7,names=["T","rho","pop","ne","chi_ross","chi_es","kap_ross"])
+    return x
