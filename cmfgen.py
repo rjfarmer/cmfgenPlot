@@ -86,11 +86,20 @@ def get_value(name,data):
         if i['name'] == n:
             return i['value']
             
-def set_value(name,data,value):
+def set_value(name,data,value,comment=None):
     n='['+name+']'
     for i in data:
         if i['name'] == n:
             i['value'] = value
+            if comment is not None:
+                i['comment'] = comment
+            return
+    # didn't find value
+    if comment is not None:
+        data.append({'name':'['+name+']','value':value,'comment':'! Newly added in data'})
+    else:
+        data.append({'name':'['+name+']','value':value,'comment':comment})
+    
 
 def get_val_file(name,filename):
     data=read_input(filename)
