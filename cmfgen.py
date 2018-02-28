@@ -27,22 +27,24 @@ PI=3.141592653589793238462643E0
 FUN_PI=3.141592653589793238462643E0
 SECS_IN_YEAR=31557600.0E0     		#365.25*24*60*60
 
-
 def read_input(filename):
-    with open(filename,'r') as f:
-        l=f.readlines()
-        
     out=[]
-    for i in l:
-        x=i.strip()
-        if len(x):
-            comment=''
-            if '!' in x:
-                comment='!'+x.split('!')[-1]
-            y=x.split()
-            value=y[0]
-            name=y[1]
-            out.append({'name':name,'value':value,'comment':comment})
+    try:
+        with open(filename,'r') as f:
+            l=f.readlines()
+        for i in l:
+            x=i.strip()
+            if len(x):
+                comment=''
+                if '!' in x:
+                    comment='!'+x.split('!')[-1]
+                y=x.split()
+                value=y[0]
+                name=y[1]
+                out.append({'name':name,'value':value,'comment':comment})
+    except FileNotFoundError:
+        out.append({'name':'','value':'','comment':''})
+                
     return out
     
 def readLineArray(f):
