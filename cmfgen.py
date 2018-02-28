@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import subprocess
+import os
 
 #Constants cmfgen uses:
 SPEED_OF_LIGHT        =2.99792458E+10 	#Exact cm/s
@@ -99,6 +101,11 @@ def set_value(name,data,value,comment=None):
         data.append({'name':'['+name+']','value':value,'comment':'! Newly added in data'})
     else:
         data.append({'name':'['+name+']','value':value,'comment':comment})
+ 
+def set_value_file(name,value,filename)
+    data=read_input(filename)
+    set_value(name,data,value)
+    write_input(filename)
     
 
 def get_val_file(name,filename):
@@ -301,6 +308,7 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=20.0,save=True):
     if save:
         write_input('VADAT_MESA',oldv)
     return oldv
+
 def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     import mesaPlot as mp
     
@@ -357,6 +365,23 @@ def lte_mesa(filein='VADAT_MESA',log_fold='LOGS/',model=1,tau=20.0,save=True):
     if save:
         write_input('VADAT_LTE_MESA',oldv)
     return oldv
+
+
+def lte_model_spec(filein='MODEL_SPEC',save=True):
+    old=read_input(filein)
+    set_value("ND",old,925)
+    set_value("NP",old,940)
+    
+    if save:
+        write_input('MODEL_SPEC_lte',old)
+    return oldv
+    
+def lte_grid_params(fileout="GRID_PARAMS"):
+    with open(fileout,'w') as f:
+        print("25  37                !# of T values; # of Electron density values",file=f)
+        print("1.0 25.0              !Tmin, Tmax (10^4K)",file=f)
+        print("1.0E+06 1.0E+18       !Log(Ne_min), Log(Ne_max)",file=f)
+    
     
 
 def freq2wave(freq):
@@ -438,4 +463,89 @@ def compare_2_vadat(vadat1,vadat2):
                 print(i['name'],i['value'],j['value'])
         if not found:
             print("No match ",i['name'])
+            
+def run_batch(link_only=False)
+    if link_only:
+        subprocess.run(["./batch.sh", "aaa"])
+    else:
+        subprocess.run(["./batch.sh"])
+
+def run_lte(cmfgensrc):
+    binary=os.path.join(cmfgensrc,'exe','main_lte.exe')
+    run_batch(True)
+    os.remove("ltebat.log")
+    os.remove("OUTLTE")
+    subprocess.run([binary])
+    
+    #Check for nans
+    if 'NaN' in open('ROSSELAND_LTE_TAB').read():
+        raise ValueError("NaNs in ROSSELAND_LTE_TAB")
+
+def run_hydro(cmfgensrc):
+    binary=os.path.join(cmfgensrc,'exe','wind_hyd.exe')
+    proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
+    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("/null","e","60","100"))
+    # Yes we are letting it crash with out of bounds to get the actual size we should use
+    num_grid=int(err.split("Index")[1].split()[0].replace("'",""))
+    proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
+    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("/null","e",num_grid,"100"))
+    
+
+def run_cmfgen(cmfgensrc):
+    binary=os.path.join(cmfgensrc,'exe','cmfgen_dev.exe')
+    run_batch(False)
+    os.remove("OUTGEN")
+    #needs error checking
+    subprocess.run([binary])
+
+def read_rvsig(filein="RVSIG_COL",header=19):
+    lines=[]
+    with open(filein,'r') as f:
+        for i in range(header):
+            lines.append(f.readline())
+    
+    data=np.genfromtxt(filein,skip_header=header,names=True,commenst="!")
+
+    return lines,data
+
+def extract_rvsig(filein)
+    l,d=read_rvsig(filein)
+    
+    rstar=float(l[7].split()[-1])
+    rmax=float(l[15].split()[-1])
+    nd=int(l[-2].split()[0])
+    
+    return rstar,rmax,nd
+    
+def update_vadat_after_hydro(vadat="VADAT",rvsig="RVSIG_COL",inits="IN_ITS",model_spec="MODEL_SPEC"):
+    
+    rstar,rmax,nd=extract_rvsig(rvsig)
+    
+    vdata=read_input(vadat)
+    set_value('RSTAR',vdata,rstar)
+    set_value('RMAX',vdata,rmax)
+    write_input(vadat,vdata)
+        
+    its=read_input(inits)
+    set_value('NUM_ITS',its,1)
+    set_value('DO_LAM_IT',its,'T')
+    write_input(inits,its)
+
+    ms=read_input(model_spec)
+    set_value('ND',ms,nd)
+    set_value('NP',ms,nd+15)
+    write_input(model_spec,ms)   
+
+def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
+    its=read_input(inits)
+    set_value('NUM_ITS',its,100)
+    set_value('DO_LAM_IT',its,'T')
+    write_input(inits,its)
+    
+    hy=read_input(hydro)
+    set_value('N_ITS',hy,5)
+    set_value('STRT_ITS',hy,10)
+    set_value('FREQ_ITS',hy,10)
+    set_value('MAX_R',hy,100)
+    write_input(hydro,hy)
     
