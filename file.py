@@ -354,3 +354,18 @@ def plot_trans(filename="../TRANS_INFO",fig=None,ax=None):
 def read_rosseland_lte(filename="ROSSELAND_LTE_TAB"):
     return np.genfromtxt(filename,skip_header=7,names=["T","rho","pop","ne","chi_ross","chi_es","kap_ross"])
     return x
+    
+def compare_2_vadat(vadat1,vadat2):
+    v1 = read_input(vadat1)
+    v2 = read_input(vadat2)
+    
+    for i in v1:
+        found=False
+        for j in v2:
+            if i['name'] == j['name']:
+                found=True
+            if i['value'] != j['value']:
+                print(i['name'],i['value'],j['value'])
+        if not found:
+            print("No match ",i['name'])
+    
