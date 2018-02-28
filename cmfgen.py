@@ -314,7 +314,6 @@ def plot_obs(filename='obs_fin_5',model_spec='MODEL_SPEC',
     x=read_obs_fin(filename)
     freq=x[0]
     jank=x[1]
-    sol=299792458.0 #m/s
     wave=freq2A(freq) #A
     
     fig=plt.figure(figsize=(12,12))
