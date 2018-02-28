@@ -258,10 +258,10 @@ def read_rvtj(filename='RVTJ'):
                 
     return model_info
 
-def vadat_mesa(vadat='VADAT',log_fold='LOGS/',model=1,tau=20.0):
+def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=20.0,save=True):
     import mesaPlot as mp
     
-    oldv=read_input(vadat)
+    oldv=read_input(filein)
     
     m=mp.MESA()
     m.log_fold=log_fold
@@ -275,10 +275,10 @@ def vadat_mesa(vadat='VADAT',log_fold='LOGS/',model=1,tau=20.0):
     set_value('MDOT',oldv,10**m.hist.log_abs_mdot[ind_hist][0])
     set_value('LSTAR',oldv,10**m.hist.log_L[ind_hist][0])
     set_value('MASS',oldv,m.hist.star_mass[ind_hist][0])
-    set_value('TEFF',oldv,10**m.prof.logT[ind_prof])
-    set_value('LOGG',oldv,10**m.prof.log_g[ind_prof])
+    set_value('TEFF',oldv,10**(m.prof.logT[ind_prof]-4))
+    set_value('LOGG',oldv,m.prof.log_g[ind_prof])
     set_value('RSTAR',oldv,(10**m.hist.log_R[ind_hist][0])*6.9598)
-    set_value('RMAX',oldv,(10**m.hist.log_R[ind_hist][0])*6.9598*1.1) #TODO: Check what rmax means
+    set_value('RMAX',oldv,200.0) 
     
     
     ind2=m.prof.tau<tau
@@ -289,15 +289,75 @@ def vadat_mesa(vadat='VADAT',log_fold='LOGS/',model=1,tau=20.0):
     for i in mesa_iso:
         abun.append(np.dot(dm[ind2],m.prof.data[i][ind2]))
         
-    set_value('PHOS/X',oldv,0.0)
+    set_value('PHOS/X',oldv,-10**-15) # Cant be zero
+    set_value('LIN_INT',oldv,'F')
+    set_value('DO_CL',oldv,'F')
     
     #Normalise
     abunSum=np.sum(abun)
     for i,j in zip(cmfgen_iso,abun):
         set_value(i,oldv,-j/abunSum)
     
-    write_input('VADAT_MESA',oldv)
+    if save:
+        write_input('VADAT_MESA',oldv)
     return oldv
+def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
+    import mesaPlot as mp
+    
+    oldv=read_input(filein)
+    
+    m=mp.MESA()
+    m.log_fold=log_fold
+    m.loadHistory()
+    m.loadProfile(num=model)
+    ind_hist=(m.hist.model_number==m.prof.model_number)
+
+    ind_prof=np.argmin(np.abs(m.prof.tau-tau))
+    rr=10**m.prof.logR[ind_prof]*6.96
+    set_value('REF_R',oldv,rr)
+    set_value('CON_R',oldv,rr+1.0)
+    set_value('RSTAR',oldv,rr-1.0)
+    set_value('VINF',oldv,1.5*m.hist.surf_escape_v[ind_hist][0]/(100.0*1000.0))
+    set_value('MDOT',oldv,10**m.hist.log_abs_mdot[ind_hist][0])
+    set_value('TEFF',oldv,10**(m.prof.logT[ind_prof]-4))
+    set_value('LOG_G',oldv,m.prof.log_g[ind_prof])
+        
+    set_value('OB_P1',oldv,200)
+    set_value('BETA',oldv,1.0)
+    set_value('MU_ATOM',oldv,m.prof.abar[ind_prof])
+    set_value('OLD_MOD',oldv,'F')
+    set_value('OLD_V',oldv,'F')
+    set_value('WIND_PRES',oldv,'T')
+    set_value('MAX_R',oldv,50.0)
+    set_value('ATOM_DEN',oldv,10**8)
+    set_value('CON_V',oldv,10.0)
+        
+    if save:
+        write_input('HYDRO_PARAMS_MESA',oldv)
+    return oldv
+    
+    
+def lte_mesa(filein='VADAT_MESA',log_fold='LOGS/',model=1,tau=20.0,save=True):
+    import mesaPlot as mp
+    
+    oldv=vadat_mesa(filein,log_fold,model,tau)
+    
+    m=mp.MESA()
+    m.log_fold=log_fold
+    m.loadHistory()
+    m.loadProfile(num=model)
+    ind_hist=(m.hist.model_number==m.prof.model_number)
+
+    ind_prof=np.argmin(np.abs(m.prof.tau-tau))
+    
+    set_value('DO_CL',oldv,'T')
+    set_value('LIN_INT',oldv,'F')
+    set_value('T_INIT_TAU',oldv,'1.5')
+    
+    if save:
+        write_input('VADAT_LTE_MESA',oldv)
+    return oldv
+    
 
 def freq2wave(freq):
     return SPEED_OF_LIGHT/(freq*10**15)
