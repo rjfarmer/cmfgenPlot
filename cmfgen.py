@@ -101,7 +101,7 @@ def set_value(name,data,value,comment=None):
         else:
             data[n].comment = comment
  
-def set_value_file(name,value,filename)
+def set_value_file(name,value,filename):
     data=read_input(filename)
     set_value(name,data,value)
     write_input(filename)
@@ -234,7 +234,7 @@ def check_mod_sum(filename='MOD_SUM',vadat='VADAT'):
     
         
 def read_rvtj(filename='RVTJ'):
-    model_info={}
+    model_info=orderedDict()
     with open(filename,'r') as f:
         _=f.readline()
         _=f.readline()
@@ -466,7 +466,7 @@ def compare_2_vadat(vadat1,vadat2):
         if not found:
             print("No match ",i['name'])
             
-def run_batch(link_only=False)
+def run_batch(link_only=False):
     if link_only:
         subprocess.run(["./batch.sh", "aaa"])
     else:
@@ -510,7 +510,7 @@ def read_rvsig(filein="RVSIG_COL",header=19):
 
     return lines,data
 
-def extract_rvsig(filein)
+def extract_rvsig(filein):
     l,d=read_rvsig(filein)
     
     rstar=float(l[7].split()[-1])
