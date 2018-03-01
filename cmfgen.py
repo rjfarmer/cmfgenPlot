@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import subprocess
 import os
+import collections
 
 #Constants cmfgen uses:
 SPEED_OF_LIGHT        =2.99792458E+10 	#Exact cm/s
@@ -29,8 +30,11 @@ PI=3.141592653589793238462643E0
 FUN_PI=3.141592653589793238462643E0
 SECS_IN_YEAR=31557600.0E0     		#365.25*24*60*60
 
+key = collections.namedtuple('key',['value','comment'])
+
+
 def read_input(filename):
-    out=[]
+    out=collections.orderedDict()
     try:
         with open(filename,'r') as f:
             l=f.readlines()
@@ -43,9 +47,9 @@ def read_input(filename):
                 y=x.split()
                 value=y[0]
                 name=y[1]
-                out.append({'name':name,'value':value,'comment':comment})
+                out[name]=key(value,comment)
     except FileNotFoundError:
-        out.append({'name':'','value':'','comment':''})
+        pass
                 
     return out
     
@@ -76,31 +80,26 @@ def skipLines(f,n):
     
 def write_input(filename,data):
     with open(filename,'w') as f:
-        for i in data:
-            print('{0: <20}'.format(i['value']),'{0: <20}'.format(i['name']),i['comment'],file=f)
+        for k,v in data:
+            print('{0: <20}'.format(v.value),'{0: <20}'.format(k),v.comment,file=f)
 
 def read_corr_sum(filename='CORRECTION_SUM'):
     return np.genfromtxt(filename,skip_header=5,names=['depth','100','10','1','0p1','0p01','0p001','0p0001'],dtype=None)
 
 def get_value(name,data):
     n='['+name+']'
-    for i in data:
-        if i['name'] == n:
-            return i['value']
+    return data[n].value
             
 def set_value(name,data,value,comment=None):
-    n='['+name+']'
-    for i in data:
-        if i['name'] == n:
-            i['value'] = value
-            if comment is not None:
-                i['comment'] = comment
-            return
-    # didn't find value
-    if comment is not None:
-        data.append({'name':'['+name+']','value':value,'comment':'! Newly added in data'})
-    else:
-        data.append({'name':'['+name+']','value':value,'comment':comment})
+    n = '['+name+']'
+    present = n in data
+    data[n].value = value
+    
+    if not present: 
+        if comment is None:
+            data[n].comment = '! Newly added in data'
+        else:
+            data[n].comment = comment
  
 def set_value_file(name,value,filename)
     data=read_input(filename)
@@ -196,8 +195,8 @@ def plot_spectrum(filename='OBSFLUX',model_spec='MODEL_SPEC'):
     x=read_obsflux(filename,model_spec)
     freq=x[0]
     jank=x[1]
-    sol=299792458.0 #m/s
-    wave=(sol/(freq*10**15))*10**9 #nm
+
+    wave=(SPEED_OF_LIGHT/(freq*10**15))*10**9 #nm
     
     fig=plt.figure(figsize=(12,12))
     ax=fig.add_subplot(111)
