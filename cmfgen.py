@@ -376,7 +376,7 @@ def lte_model_spec(filein='MODEL_SPEC',save=True):
     
     if save:
         write_input('MODEL_SPEC_lte',old)
-    return oldv
+    return old
     
 def lte_grid_params(fileout="GRID_PARAMS"):
     with open(fileout,'w') as f:
