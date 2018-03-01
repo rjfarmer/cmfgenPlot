@@ -32,13 +32,12 @@ for i in glob.glob(os.path.join(OGRID,"*OUT")):
     shutil.copyfile(i,os.path.join(FOLDER,os.path.basename(i).replace("_OUT","_IN")))
 
 
-
 cmf.vadat_mesa(filein=os.path.join(FOLDER,"VADAT"),log_fold=MESA_LOGS,model=MESA_MODEL)
 
 #lte work
 mkdir(FOLDLTE)
 
-cmf.lte_vadat(filein=os.path.join(FOLDER,"VADAT_MESA"),model=MESA_MODEL)
+cmf.lte_mesa(filein=os.path.join(FOLDER,"VADAT_MESA"),model=MESA_MODEL,tau=20.0,log_fold=MESA_LOGS)
 shutil.copyfile(os.path.join(FOLDER,"VADAT_LTE_MESA"),os.path.join(FOLDLTE,"VADAT"))
 
 cmf.lte_model_spec(filein=os.path.join(FOLDLTE,"MODEL_SPEC"))
@@ -57,7 +56,7 @@ os.chdir(os.path.pardir)
 #Hydro
 mkdir(FOLDHYDRO)
 shutil.copyfile(os.path.join(FOLDLTE,"ROSSELAND_LTE_TAB"),os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"))
-cmf.hydro_mesa(log_fold=MESA_LOGS,model=MESA_MODEL)
+cmf.hydro_mesa(log_fold=MESA_LOGS,model=MESA_MODEL,tau=20.0)
 shutil.copyfile("HYDRO_PARAMS_MESA",os.path.join(FOLDHYDRO,"HYDRO_PARAMS_MESA"))
 
 os.cwd(FOLDHYDRO)

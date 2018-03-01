@@ -90,6 +90,9 @@ def get_value(name,data):
 def set_value(name,data,value,comment=None):
     n = '['+name+']'
     present = n in data
+    if not present:
+        data[n] = {}
+        
     data[n]['value'] = value
     
     if not present: 
