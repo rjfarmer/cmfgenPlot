@@ -29,7 +29,7 @@ for i in ["batch.sh","IN_ITS","VADAT","MODEL_SPEC"]:
     shutil.copyfile(os.path.join(OGRID,i),os.path.join(FOLDER,i))
 
 for i in glob.glob(os.path.join(OGRID,"*OUT")):
-    shutil.copyfile(i,os.path.join(FOLDER,i.replace("_OUT","_IN")))
+    shutil.copyfile(i,os.path.join(FOLDER,os.path.basename(i).replace("_OUT","_IN")))
 
 
 

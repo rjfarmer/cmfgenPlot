@@ -34,7 +34,7 @@ key = collections.namedtuple('key',['value','comment'])
 
 
 def read_input(filename):
-    out=collections.orderedDict()
+    out=collections.OrderedDict()
     try:
         with open(filename,'r') as f:
             l=f.readlines()
@@ -234,7 +234,7 @@ def check_mod_sum(filename='MOD_SUM',vadat='VADAT'):
     
         
 def read_rvtj(filename='RVTJ'):
-    model_info=orderedDict()
+    model_info=OrderedDict()
     with open(filename,'r') as f:
         _=f.readline()
         _=f.readline()
