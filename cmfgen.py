@@ -475,13 +475,18 @@ def run_batch(link_only=False):
 def run_lte(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','main_lte.exe')
     run_batch(True)
-    os.remove("ltebat.log")
-    os.remove("OUTLTE")
+    safe_rm("ltebat.log")
+    safe_rm("OUTLTE")
     subprocess.run([binary],shell=True)
     
     #Check for nans
     if 'NaN' in open('ROSSELAND_LTE_TAB').read():
         raise ValueError("NaNs in ROSSELAND_LTE_TAB")
+
+def safe_rm(filename):
+    if os.path.isfile(filename):
+        os.remove(filename
+
 
 def run_hydro(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','wind_hyd.exe')
@@ -496,7 +501,7 @@ def run_hydro(cmfgensrc):
 def run_cmfgen(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','cmfgen_dev.exe')
     run_batch(False)
-    os.remove("OUTGEN")
+    safe_rm("OUTGEN")
     #needs error checking
     subprocess.run([binary])
 
