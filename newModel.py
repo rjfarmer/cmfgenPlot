@@ -5,11 +5,14 @@ import glob
 
 #Run new cmfgen model
 
-FOLDER="new_model"
-MESA_MODEL=1
-MESA_LOGS="LOGS1/"
-OGRID=""
-CMFGENSRC=os.path.expandvars('$HOME/src/cmfgen')
+FOLDER="./"
+config_file='config.run'
+
+with open(config_file,'r') as f:
+    MESA_MODEL=f.readline.strip()
+    MESA_LOGS=f.readline.strip()
+    OGRID=f.readline.strip()
+    CMFGENSRC=os.path.expandvars(f.readline.strip())
 
 FOLDLTE=os.path.join(FOLDER,"lte")
 FOLDHYDRO=os.path.join(FOLDER,"hydro_dir")
@@ -21,8 +24,6 @@ def mkdir(folder):
     except FileExistsError:
         pass
     
-
-mkdir(FOLDER)
 # Copy old model
 for i in ["batch.sh","IN_ITS","VADAT","MODEL_SPEC"]:
     shutil.copyfile(os.path.join(OGRID,i),os.path.join(FOLDER,i))
