@@ -491,7 +491,7 @@ def run_lte(cmfgensrc):
 
 def safe_rm(filename):
     if os.path.isfile(filename):
-        os.remove(filename
+        os.remove(filename)
 
 def make_exectuable(filename):
     os.chmod(filename,stat.S_IRUSR|stat.S_IWUSR|stat.S_IXUSR)
