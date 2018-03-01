@@ -468,16 +468,16 @@ def compare_2_vadat(vadat1,vadat2):
             
 def run_batch(link_only=False):
     if link_only:
-        subprocess.run(["./batch.sh", "aaa"])
+        subprocess.run(["./batch.sh", "aaa"],shell=True)
     else:
-        subprocess.run(["./batch.sh"])
+        subprocess.run(["./batch.sh"],shell=True)
 
 def run_lte(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','main_lte.exe')
     run_batch(True)
     os.remove("ltebat.log")
     os.remove("OUTLTE")
-    subprocess.run([binary])
+    subprocess.run([binary],shell=True)
     
     #Check for nans
     if 'NaN' in open('ROSSELAND_LTE_TAB').read():
