@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import subprocess
 import os
 import collections
+import stat
 
 #Constants cmfgen uses:
 SPEED_OF_LIGHT        =2.99792458E+10 	#Exact cm/s
@@ -467,10 +468,15 @@ def compare_2_vadat(vadat1,vadat2):
             print("No match ",i['name'])
             
 def run_batch(link_only=False):
+    filename="./batch.sh"
+    make_exectuable(filename)
+    args=[filename]
+    
     if link_only:
-        subprocess.run(["./batch.sh", "aaa"],shell=True)
-    else:
-        subprocess.run(["./batch.sh"],shell=True)
+        args.append('aaa')
+        
+    subprocess.run(args,shell=True)
+
 
 def run_lte(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','main_lte.exe')
@@ -486,6 +492,9 @@ def run_lte(cmfgensrc):
 def safe_rm(filename):
     if os.path.isfile(filename):
         os.remove(filename
+
+def make_exectuable(filename):
+    os.chmod(filename,stat.S_IRUSR|stat.S_IWUSR|stat.S_IXUSR)
 
 
 def run_hydro(cmfgensrc):
