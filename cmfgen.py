@@ -119,6 +119,9 @@ def get_vals_file(names,filename):
         out[i]=get_value(i,data)
     return out
     
+def safe_mdot(m,ind):
+    return np.maximum(10**m.hist.log_abs_mdot[ind][0],10**-12)
+        
 def check_corr_sum(filename='CORRECTION_SUM'):
     corr=read_corr_sum(filename)
     cols=['100','10','1','0p1','0p01','0p001','0p0001']
@@ -279,7 +282,7 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=20.0,save=True):
     ind_prof=np.argmin(np.abs(m.prof.tau-tau))
     
     set_value('VINF',oldv,1.5*m.hist.surf_escape_v[ind_hist][0]/(100.0*1000.0))
-    set_value('MDOT',oldv,10**m.hist.log_abs_mdot[ind_hist][0])
+    set_value('MDOT',oldv,safe_mdot(m,ind_hist))
     set_value('LSTAR',oldv,10**m.hist.log_L[ind_hist][0])
     set_value('MASS',oldv,m.hist.star_mass[ind_hist][0])
     set_value('TEFF',oldv,10**(m.prof.logT[ind_prof]-4))
@@ -326,7 +329,7 @@ def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     set_value('CON_R',oldv,rr+1.0)
     set_value('RSTAR',oldv,rr-1.0)
     set_value('VINF',oldv,1.5*m.hist.surf_escape_v[ind_hist][0]/(100.0*1000.0))
-    set_value('MDOT',oldv,10**m.hist.log_abs_mdot[ind_hist][0])
+    set_value('MDOT',oldv,safe_mdot(m,ind_hist))
     set_value('TEFF',oldv,10**(m.prof.logT[ind_prof]-4))
     set_value('LOG_G',oldv,m.prof.log_g[ind_prof])
         
