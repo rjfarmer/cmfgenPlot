@@ -40,7 +40,7 @@ mkdir(FOLDLTE)
 cmf.lte_mesa(filein=os.path.join(FOLDER,"VADAT_MESA"),model=MESA_MODEL,tau=20.0,log_fold=MESA_LOGS)
 shutil.copyfile(os.path.join(FOLDER,"VADAT_LTE_MESA"),os.path.join(FOLDLTE,"VADAT"))
 
-cmf.lte_model_spec(filein=os.path.join(FOLDLTE,"MODEL_SPEC"))
+cmf.lte_model_spec(filein=os.path.join(FOLDER,"MODEL_SPEC"))
 shutil.copyfile(os.path.join(FOLDER,"MODEL_SPEC_lte"),os.path.join(FOLDLTE,"MODEL_SPEC"))
 
 cmf.lte_grid_params(os.path.join(FOLDLTE,"GRID_PARAMS"))

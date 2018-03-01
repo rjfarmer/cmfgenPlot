@@ -374,6 +374,7 @@ def lte_model_spec(filein='MODEL_SPEC',save=True):
     old=read_input(filein)
     set_value("ND",old,925)
     set_value("NP",old,940)
+    set_value("NC",old,15)
     
     if save:
         write_input('MODEL_SPEC_lte',old)
