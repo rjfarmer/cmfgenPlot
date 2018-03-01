@@ -9,7 +9,7 @@ FOLDER="new_model"
 MESA_MODEL=1
 MESA_LOGS="LOGS1/"
 OGRID=""
-CMFGENSRC=""
+CMFGENSRC=os.path.expandvars('$HOME/src/cmfgen')
 
 FOLDLTE=os.path.join(FOLDER,"lte")
 FOLDHYDRO=os.path.join(FOLDER,"hydro_dir")
