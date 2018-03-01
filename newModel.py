@@ -20,7 +20,7 @@ FOLDHYDRO=os.path.join(FOLDER,"hydro_dir")
 
 def mkdir(folder):
     try:
-        os.mkdir(FOLDER)
+        os.mkdir(folder)
     except FileExistsError:
         pass
     
