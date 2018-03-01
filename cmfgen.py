@@ -30,9 +30,6 @@ PI=3.141592653589793238462643E0
 FUN_PI=3.141592653589793238462643E0
 SECS_IN_YEAR=31557600.0E0     		#365.25*24*60*60
 
-key = collections.namedtuple('key',['value','comment'])
-
-
 def read_input(filename):
     out=collections.OrderedDict()
     try:
@@ -47,7 +44,7 @@ def read_input(filename):
                 y=x.split()
                 value=y[0]
                 name=y[1]
-                out[name]=key(value,comment)
+                out[name]={'value':value,'comment':comment}
     except FileNotFoundError:
         pass
                 
@@ -81,25 +78,25 @@ def skipLines(f,n):
 def write_input(filename,data):
     with open(filename,'w') as f:
         for k,v in data:
-            print('{0: <20}'.format(v.value),'{0: <20}'.format(k),v.comment,file=f)
+            print('{0: <20}'.format(v['value']),'{0: <20}'.format(k),v['comment'],file=f)
 
 def read_corr_sum(filename='CORRECTION_SUM'):
     return np.genfromtxt(filename,skip_header=5,names=['depth','100','10','1','0p1','0p01','0p001','0p0001'],dtype=None)
 
 def get_value(name,data):
     n='['+name+']'
-    return data[n].value
+    return data[n]['value']
             
 def set_value(name,data,value,comment=None):
     n = '['+name+']'
     present = n in data
-    data[n].value = value
+    data[n]['value'] = value
     
     if not present: 
         if comment is None:
-            data[n].comment = '! Newly added in data'
+            data[n]['comment'] = '! Newly added in data'
         else:
-            data[n].comment = comment
+            data[n]['comment'] = comment
  
 def set_value_file(name,value,filename):
     data=read_input(filename)
