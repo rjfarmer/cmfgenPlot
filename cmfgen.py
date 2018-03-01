@@ -484,6 +484,7 @@ def run_lte(cmfgensrc):
     run_batch(True)
     safe_rm("ltebat.log")
     safe_rm("OUTLTE")
+    safe_rm("OUTGEN")
     subprocess.run([binary],shell=True)
     
     #Check for nans
