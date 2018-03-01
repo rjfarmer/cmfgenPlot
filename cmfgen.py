@@ -77,7 +77,7 @@ def skipLines(f,n):
     
 def write_input(filename,data):
     with open(filename,'w') as f:
-        for k,v in data.items:
+        for k,v in data.items():
             print('{0: <20}'.format(v['value']),'{0: <20}'.format(k),v['comment'],file=f)
 
 def read_corr_sum(filename='CORRECTION_SUM'):
