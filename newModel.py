@@ -57,7 +57,7 @@ os.chdir(os.path.pardir)
 mkdir(FOLDHYDRO)
 shutil.copyfile(os.path.join(FOLDLTE,"ROSSELAND_LTE_TAB"),os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"))
 cmf.hydro_mesa(log_fold=MESA_LOGS,model=MESA_MODEL,tau=20.0)
-shutil.copyfile("HYDRO_PARAMS_MESA",os.path.join(FOLDHYDRO,"HYDRO_PARAMS_MESA"))
+shutil.copyfile("HYDRO_PARAMS_MESA",os.path.join(FOLDHYDRO,"HYDRO_PARAMS"))
 
 os.chdir(FOLDHYDRO)
 cmf.run_hydro(CMFGENSRC)
