@@ -567,4 +567,16 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     set_value('FREQ_ITS',hy,10)
     set_value('MAX_R',hy,100)
     write_input(hydro,hy)
+
+def clean_iterations():
+    binary=os.path.join(cmfgensrc,'exe','rewrite_scr.exe')
+    out,err = proc.communicate(input="{}\n{}\n".format("1",""))
+    binary=os.path.join(cmfgensrc,'com','mvscr.sh')
+    subprocess.run([binary],shell=True)
+
+def check_cmfgen():
+    check_corr_sum()
+    check_hydro()
+    check_mod_sum()
+    check_obsflux()
     
