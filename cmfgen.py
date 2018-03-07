@@ -523,7 +523,7 @@ def read_rvsig(filein="RVSIG_COL",header=19):
         for i in range(header):
             lines.append(f.readline())
     
-    data=np.genfromtxt(filein,skip_header=header,names=True,commenst="!")
+    data=np.genfromtxt(filein,skip_header=header,names=True,comments="!")
 
     return lines,data
 
