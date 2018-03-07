@@ -292,7 +292,7 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     
     
     ind2=np.zeros(np.size(m.prof.tau),dtype='bool')
-    ind2[0:ind_prof]=True
+    ind2[:ind_prof+1]=True
     mesa_iso=['h1','he4','c12','o16','n14','si28','s32','fe56']
     cmfgen_iso=['HYD/X','HE/X','CARB/X','OXY/X','NIT/X','SIL/X','SUL/X','IRON/X']
     abun=[]
