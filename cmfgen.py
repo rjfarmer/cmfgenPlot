@@ -512,7 +512,7 @@ def run_hydro(cmfgensrc):
 
 def run_cmfgen(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','cmfgen_dev.exe')
-    run_batch(False)
+    run_batch(True)
     safe_rm("OUTGEN")
     #needs error checking
     r = subprocess.run([binary],stderr=subprocess.PIPE)
