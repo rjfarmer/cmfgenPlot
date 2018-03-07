@@ -25,7 +25,7 @@ def mkdir(folder):
         pass
     
 # Copy old model
-for i in ["batch.sh","IN_ITS","VADAT","MODEL_SPEC"]:
+for i in ["batch.sh","IN_ITS","VADAT","MODEL_SPEC","GAMMAS_IN"]:
     shutil.copyfile(os.path.join(OGRID,i),os.path.join(FOLDER,i))
 
 for i in glob.glob(os.path.join(OGRID,"*OUT")):
