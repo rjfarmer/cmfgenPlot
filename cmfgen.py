@@ -268,7 +268,7 @@ def read_rvtj(filename='RVTJ'):
                 
     return model_info
 
-def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=20.0,save=True):
+def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     import mesaPlot as mp
     
     oldv=read_input(filein)
@@ -349,7 +349,7 @@ def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     return oldv
     
     
-def lte_mesa(filein='VADAT_MESA',log_fold='LOGS/',model=1,tau=20.0,save=True):
+def lte_mesa(filein='VADAT_MESA',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     import mesaPlot as mp
     
     oldv=vadat_mesa(filein,log_fold,model,tau)
@@ -504,10 +504,10 @@ def run_hydro(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','wind_hyd.exe')
     proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
     out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("/null","e","60","100"))
-    # Yes we are letting it crash with out of bounds to get the actual size we should use
-    num_grid=int(err.split("Index")[1].split()[0].replace("'",""))
-    proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
-    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("/null","e",num_grid,"100"))
+    # # Yes we are letting it crash with out of bounds to get the actual size we should use
+    # num_grid=int(err.split("Index")[1].split()[0].replace("'",""))
+    # proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
+    # out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("/null","e",num_grid,"100"))
     
 
 def run_cmfgen(cmfgensrc):

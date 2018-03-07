@@ -37,7 +37,7 @@ cmf.vadat_mesa(filein=os.path.join(FOLDER,"VADAT"),log_fold=MESA_LOGS,model=MESA
 #lte work
 mkdir(FOLDLTE)
 
-cmf.lte_mesa(filein=os.path.join(FOLDER,"VADAT_MESA"),model=MESA_MODEL,tau=20.0,log_fold=MESA_LOGS)
+cmf.lte_mesa(filein=os.path.join(FOLDER,"VADAT_MESA"),model=MESA_MODEL,log_fold=MESA_LOGS)
 shutil.copyfile(os.path.join(FOLDER,"VADAT_LTE_MESA"),os.path.join(FOLDLTE,"VADAT"))
 
 cmf.lte_model_spec(filein=os.path.join(FOLDER,"MODEL_SPEC"))
@@ -56,7 +56,7 @@ os.chdir(os.path.pardir)
 #Hydro
 mkdir(FOLDHYDRO)
 shutil.copyfile(os.path.join(FOLDLTE,"ROSSELAND_LTE_TAB"),os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"))
-cmf.hydro_mesa(log_fold=MESA_LOGS,model=MESA_MODEL,tau=20.0)
+cmf.hydro_mesa(log_fold=MESA_LOGS,model=MESA_MODEL)
 shutil.copyfile("HYDRO_PARAMS_MESA",os.path.join(FOLDHYDRO,"HYDRO_PARAMS"))
 
 os.chdir(FOLDHYDRO)
