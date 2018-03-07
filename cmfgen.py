@@ -586,4 +586,12 @@ def check_cmfgen():
     check_hydro()
     check_mod_sum()
     check_obsflux()
-    
+  
+def check_outgen(outgen="OUTGEN",end=5):
+    with open(outgen,'r') as f:
+        lines=f.readlines()
+        
+    for i in lines[-end:-1]:
+        if 'Error ' in i:
+            print(i)
+            raise RuntimeError("Error in OUTGEN")
