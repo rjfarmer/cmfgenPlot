@@ -67,7 +67,7 @@ os.chdir(os.path.pardir)
 shutil.copyfile(os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"),"ROSSELAND_LTE_TAB")
 shutil.copyfile(os.path.join(FOLDHYDRO,"RVSIG_COL_NEW"),"RVSIG_COL")
 
-
+shutil.copyfile("VADAT_LTE_MESA","VADAT")
 cmf.update_vadat_after_hydro()
 shutil.copyfile(os.path.join(OGRID,"GREY_SCL_FACOUT"),"GREY_SCL_FAC_IN")
 #needs error checking
