@@ -29,7 +29,10 @@ for i in ["batch.sh","IN_ITS","VADAT","MODEL_SPEC","GAMMAS_IN","He2_IN","HYDRO_D
     shutil.copyfile(os.path.join(OGRID,i),os.path.join(FOLDER,i))
 
 for i in glob.glob(os.path.join(OGRID,"*OUT")):
-    shutil.copyfile(i,os.path.join(FOLDER,os.path.basename(i).replace("_OUT","_IN")))
+    if i.endswith("_OUT"):
+        shutil.copyfile(i,os.path.join(FOLDER,os.path.basename(i).replace("_OUT","_IN")))
+    else:
+        shutil.copyfile(i,os.path.join(FOLDER,os.path.basename(i).replace("OUT","_IN")))
 
 
 cmf.vadat_mesa(filein=os.path.join(FOLDER,"VADAT"),log_fold=MESA_LOGS,model=MESA_MODEL)
