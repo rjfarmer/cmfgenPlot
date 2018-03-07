@@ -515,7 +515,11 @@ def run_cmfgen(cmfgensrc):
     run_batch(False)
     safe_rm("OUTGEN")
     #needs error checking
-    subprocess.run([binary])
+    r = subprocess.run([binary],stderr=subprocess.PIPE)
+    se = r.stderr.decode('utf-8')
+    if 'Error' in se or 'Traceback' in se:
+        print(se)
+        raise RuntimeError("CMFGEN failed")
 
 def read_rvsig(filein="RVSIG_COL",header=19):
     lines=[]
@@ -568,7 +572,7 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     set_value('MAX_R',hy,100)
     write_input(hydro,hy)
 
-def clean_iterations():
+def clean_iterations(cmfgensrc=''):
     binary=os.path.join(cmfgensrc,'exe','rewrite_scr.exe')
     out,err = proc.communicate(input="{}\n{}\n".format("1",""))
     binary=os.path.join(cmfgensrc,'com','mvscr.sh')
