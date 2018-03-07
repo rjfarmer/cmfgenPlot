@@ -50,7 +50,7 @@ shutil.copyfile("batch.sh",os.path.join(FOLDLTE,"batch.sh"))
 
 os.chdir(FOLDLTE)
 cmf.run_lte(CMFGENSRC)
-os.chdir(os.path.pardir)
+os.chdir('../')
 
 
 #Hydro
@@ -61,7 +61,7 @@ shutil.copyfile("HYDRO_PARAMS_MESA",os.path.join(FOLDHYDRO,"HYDRO_PARAMS"))
 
 os.chdir(FOLDHYDRO)
 cmf.run_hydro(CMFGENSRC)
-os.chdir(os.path.pardir)
+os.chdir('../')
 
 #Setup for cmfgen
 shutil.copyfile(os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"),"ROSSELAND_LTE_TAB")

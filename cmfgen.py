@@ -515,11 +515,14 @@ def run_cmfgen(cmfgensrc):
     run_batch(True)
     safe_rm("OUTGEN")
     #needs error checking
-    r = subprocess.run([binary],stderr=subprocess.PIPE)
-    se = r.stderr.decode('utf-8')
-    if 'Error' in se or 'Traceback' in se:
-        print(se)
+    result = subprocess.run([binary],stderr=subprocess.STDOUT,stdout=subprocess.PIPE)
+    result = result.stdout.decode('utf-8')
+    with open('batch.log','w') as f:
+        print(result,file=f)
+    
+    if 'Error' in result or 'Traceback' in result:
         raise RuntimeError("CMFGEN failed")
+
 
 def read_rvsig(filein="RVSIG_COL",header=19):
     lines=[]
