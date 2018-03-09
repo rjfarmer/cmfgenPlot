@@ -174,7 +174,7 @@ def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
                 if l[0].isalpha():
                     header=l
                     skipLines(f,1)
-                    data=readLineArry(f)
+                    data=readLineArray(f)
                     output[header]=data
                     loc=f.tell()
         extras=[]
