@@ -147,7 +147,7 @@ def check_hydro(filename='HYDRO',model_spec='MODEL_SPEC',vel=10.0,err=4.0):
     if np.all(hydro['Error'][ind]<err):
         print("Hydro Success")
     else:
-        print("Hydro Fail max value is ",np.max(hydro['V'][ind]))
+        raise RuntimeError("Hydro Fail max value is ",np.max(hydro['V'][ind]))
     
     
 def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
@@ -165,7 +165,7 @@ def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
         output={}
         loc=f.tell()
         while True:
-            l=f.readline.strip()
+            l=f.readline().strip()
             if len(l):
                 if ":" in l:
                     f.seek(loc)
@@ -230,7 +230,7 @@ def check_mod_sum(filename='MOD_SUM',vadat='VADAT'):
         if i.startswith('g='):
             logg=float(i.split('=')[-1])
     
-    print('MOD_SUM started with Teff,logg ',initial['TEFF'],initial['LOGG'])
+    print('MOD_SUM started with Teff,logg ',initial['TEFF']*10**4,initial['LOGG'])
     print('ended with Teff,logg ',teff,logg)    
     
         
