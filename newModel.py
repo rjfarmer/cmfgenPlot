@@ -82,8 +82,9 @@ cmf.update_after_test()
 #needs error checking
 #Full run
 cmf.run_cmfgen(CMFGENSRC)
+cmf.check_cmfgen()
 cmf.check_outgen()
 
 cmf.clean_iterations(CMFGENSRC)
-cmf.check_cmfgen()
+
 

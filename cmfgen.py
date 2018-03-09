@@ -565,7 +565,7 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     write_input(inits,its)
     
     hy=read_input(hydro)
-    set_value('N_ITS',hy,5)
+    set_value('N_ITS',hy,10)
     set_value('STRT_ITS',hy,10)
     set_value('FREQ_ITS',hy,10)
     set_value('MAX_R',hy,100)
@@ -592,3 +592,4 @@ def check_outgen(outgen="OUTGEN",end=5):
         if 'Error ' in i:
             print(i)
             raise RuntimeError("Error in OUTGEN")
+    print("OUTGEN is clean")
