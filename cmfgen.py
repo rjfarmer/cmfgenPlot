@@ -577,6 +577,7 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
 
 def clean_iterations(cmfgensrc=''):
     binary=os.path.join(cmfgensrc,'exe','rewrite_scr.exe')
+    proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
     out,err = proc.communicate(input="{}\n{}\n".format("1",""))
     binary=os.path.join(cmfgensrc,'com','mvscr.sh')
     subprocess.run([binary],shell=True)
