@@ -147,7 +147,7 @@ def check_hydro(filename='HYDRO',model_spec='MODEL_SPEC',vel=10.0,err=4.0):
     if np.all(hydro['Error'][ind]<err):
         print("Hydro Success")
     else:
-        raise RuntimeError("Hydro Fail max value is ",np.max(hydro['V'][ind]))
+        raise RuntimeError("Hydro Fail max error is " +str(np.max(hydro['Error'][ind]))+" err is "+str(err))
     
     
 def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
@@ -230,7 +230,7 @@ def check_mod_sum(filename='MOD_SUM',vadat='VADAT'):
         if i.startswith('g='):
             logg=float(i.split('=')[-1])
     
-    print('MOD_SUM started with Teff,logg ',initial['TEFF']*10**4,initial['LOGG'])
+    print('MOD_SUM started with Teff,logg ',float(initial['TEFF'])*10**4,initial['LOGG'])
     print('ended with Teff,logg ',teff,logg)    
     
         
@@ -504,11 +504,7 @@ def run_hydro(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','wind_hyd.exe')
     proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
     out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("/null","e","60","100"))
-    # # Yes we are letting it crash with out of bounds to get the actual size we should use
-    # num_grid=int(err.split("Index")[1].split()[0].replace("'",""))
-    # proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
-    # out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("/null","e",num_grid,"100"))
-    
+
 
 def run_cmfgen(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','cmfgen_dev.exe')
