@@ -48,9 +48,9 @@ def read_input(filename):
                 out[name]={'value':value,'comment':comment}
     except FileNotFoundError:
         pass
-                
+
     return out
-    
+
 def readLineArray(f):
     x=[]
     while True:
@@ -66,16 +66,16 @@ def readLineArray(f):
             x.extend(tmp)
         else:
             break
-            
+
     return np.array(x)
-            
-            
-        
+
+
+
 def skipLines(f,n):
     for i in range(n):
         _=f.readline()
-    
-    
+
+
 def write_input(filename,data):
     with open(filename,'w') as f:
         for k,v in data.items():
@@ -87,41 +87,41 @@ def read_corr_sum(filename='CORRECTION_SUM'):
 def get_value(name,data):
     n='['+name+']'
     return data[n]['value']
-            
+
 def set_value(name,data,value,comment=None):
     n = '['+name+']'
     present = n in data
     if not present:
         data[n] = {}
-        
+
     data[n]['value'] = value
-    
-    if not present: 
+
+    if not present:
         if comment is None:
             data[n]['comment'] = '! Newly added in data'
         else:
             data[n]['comment'] = comment
- 
+
 def set_value_file(name,value,filename):
     data=read_input(filename)
     set_value(name,data,value)
     write_input(filename)
-    
+
 
 def get_val_file(name,filename):
     data=read_input(filename)
     return get_value(name,data)
-    
+
 def get_vals_file(names,filename):
     data=read_input(filename)
     out={}
     for i in names:
         out[i]=get_value(i,data)
     return out
-    
+
 def safe_mdot(m,ind):
     return np.maximum(10**m.hist.log_abs_mdot[ind][0],10**-12)
-        
+
 def check_corr_sum(filename='CORRECTION_SUM'):
     corr=read_corr_sum(filename)
     cols=['100','10','1','0p1','0p01','0p001','0p0001']
@@ -136,20 +136,20 @@ def check_corr_sum(filename='CORRECTION_SUM'):
 def read_hydro(filename='HYDRO',model_spec='MODEL_SPEC'):
     num_depths=get_val_file('ND',model_spec)
     out=np.genfromtxt(filename,skip_header=1,max_rows=int(num_depths),names=['R','V','Error','VdVdR','dPdR/ROH','g_TOT','g_RAD','g_ELEC','Gamma','Depth'])
-    
+
     #TODO: work out rest of the file
     return out
 
 def check_hydro(filename='HYDRO',model_spec='MODEL_SPEC',vel=10.0,err=4.0):
     hydro=read_hydro(filename,model_spec)
     ind=[hydro['V']<vel]
-    
+
     if np.all(hydro['Error'][ind]<err):
         print("Hydro Success")
     else:
         raise RuntimeError("Hydro Fail max error is " +str(np.max(hydro['Error'][ind]))+" err is "+str(err))
-    
-    
+
+
 def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
     con_freq=[]
     flux=[]
@@ -158,10 +158,10 @@ def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
         #skip first four lines
         skipLines(f,4)
         con_freq=readLineArray(f)
-        
+
         skipLines(f,3)
         flux=readLineArray(f)
-        
+
         output={}
         loc=f.tell()
         while True:
@@ -170,7 +170,7 @@ def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
                 if ":" in l:
                     f.seek(loc)
                     break
-                
+
                 if l[0].isalpha():
                     header=l
                     skipLines(f,1)
@@ -184,43 +184,43 @@ def read_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
             if len(i):
                 j=i.split(':')
                 extras.append([j[0],j[1].split()])
-                
+
     return con_freq,flux,output,extras
 
 def check_obsflux(filename='OBSFLUX',model_spec='MODEL_SPEC'):
     x=read_obsflux(filename,model_spec)
     x=x[-1][-2][1][1]
     print("OBSFLUX xray is ",x, " should ~1d-7")
-    
+
 def plot_spectrum(filename='OBSFLUX',model_spec='MODEL_SPEC'):
     x=read_obsflux(filename,model_spec)
     freq=x[0]
     jank=x[1]
 
     wave=(SPEED_OF_LIGHT/(freq*10**15))*10**9 #nm
-    
+
     fig=plt.figure(figsize=(12,12))
     ax=fig.add_subplot(111)
     ax.plot(np.log10(wave),np.log10(jank))
     ax.set_xlabel('log10 wave/nm')
     ax.set_ylabel('log10 Jy')
     plt.show()
-    
-    
-    
+
+
+
 def check_mod_sum(filename='MOD_SUM',vadat='VADAT'):
     #TODO make a read_mod_sum
 
     with open(filename,'r') as f:
         l=f.readlines()
-        
+
     initial = get_vals_file(['TEFF','LOGG'],vadat)
-        
+
     teff=[]
     for i in l:
         if 'Teff' in i:
             teff.append(i)
-            
+
     t=teff[-1].split()
     teff=''
     logg=''
@@ -229,18 +229,18 @@ def check_mod_sum(filename='MOD_SUM',vadat='VADAT'):
             teff=float(i.split('=')[-1])
         if i.startswith('g='):
             logg=float(i.split('=')[-1])
-    
+
     print('MOD_SUM started with Teff,logg ',float(initial['TEFF'])*10**4,initial['LOGG'])
-    print('ended with Teff,logg ',teff,logg)    
-    
-        
+    print('ended with Teff,logg ',teff,logg)
+
+
 def read_rvtj(filename='RVTJ'):
     model_info=OrderedDict()
     with open(filename,'r') as f:
         _=f.readline()
         _=f.readline()
         _=f.readline()
-        
+
         l=f.readline()
         model_info['nd']=l.split(':')[-1].strip()
         l=f.readline()
@@ -254,25 +254,25 @@ def read_rvtj(filename='RVTJ'):
         l=f.readline()
         model_info['lum']=l.split(':')[-1].strip()
         l=f.readline()
-        model_info['h/he']=l.split(':')[-1].strip()   
+        model_info['h/he']=l.split(':')[-1].strip()
 
         _=f.readline()
         _=f.readline()
-    
+
         for i in range(int(model_info['nc'])):
             h=f.readline().strip()
             model_info[h]=[]
             print(h)
             for j in range(int(model_info['nd'])//8+1):
                 model_info[h].extend([float(k) for k in f.readline().strip().split()])
-                
+
     return model_info
 
 def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     import mesaPlot as mp
-    
+
     oldv=read_input(filein)
-    
+
     m=mp.MESA()
     m.log_fold=log_fold
     m.loadHistory()
@@ -280,7 +280,7 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     ind_hist=(m.hist.model_number==m.prof.model_number)
 
     ind_prof=np.argmin(np.abs(m.prof.tau-tau))
-    
+
     set_value('VINF',oldv,1.5*m.hist.surf_escape_v[ind_hist][0]/(100.0*1000.0))
     set_value('MDOT',oldv,safe_mdot(m,ind_hist))
     set_value('LSTAR',oldv,10**m.hist.log_L[ind_hist][0])
@@ -288,9 +288,9 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     set_value('TEFF',oldv,10**(m.prof.logT[ind_prof]-4))
     set_value('LOGG',oldv,m.prof.log_g[ind_prof])
     set_value('RSTAR',oldv,(10**m.hist.log_R[ind_hist][0])*6.9598)
-    set_value('RMAX',oldv,200.0) 
-    
-    
+    set_value('RMAX',oldv,200.0)
+
+
     ind2=np.zeros(np.size(m.prof.tau),dtype='bool')
     ind2[:ind_prof+1]=True
     mesa_iso=['h1','he4','c12','o16','n14','si28','s32','fe56']
@@ -299,25 +299,25 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     dm=np.abs(np.ediff1d(m.prof.mass,to_end=[0]))
     for i in mesa_iso:
         abun.append(np.dot(dm[ind2],m.prof.data[i][ind2]))
-        
+
     set_value('PHOS/X',oldv,-10**-15) # Cant be zero
     set_value('LIN_INT',oldv,'F')
     set_value('DO_CL',oldv,'F')
-    
+
     #Normalise
     abunSum=np.sum(abun)
     for i,j in zip(cmfgen_iso,abun):
         set_value(i,oldv,-j/abunSum)
-    
+
     if save:
         write_input('VADAT_MESA',oldv)
     return oldv
 
 def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     import mesaPlot as mp
-    
+
     oldv=read_input(filein)
-    
+
     m=mp.MESA()
     m.log_fold=log_fold
     m.loadHistory()
@@ -333,7 +333,7 @@ def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     set_value('MDOT',oldv,safe_mdot(m,ind_hist))
     set_value('TEFF',oldv,10**(m.prof.logT[ind_prof]-4))
     set_value('LOG_G',oldv,m.prof.log_g[ind_prof])
-        
+
     set_value('OB_P1',oldv,200)
     set_value('BETA',oldv,1.0)
     set_value('MU_ATOM',oldv,m.prof.abar[ind_prof])
@@ -343,17 +343,17 @@ def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     set_value('MAX_R',oldv,50.0)
     set_value('ATOM_DEN',oldv,10**8)
     set_value('CON_V',oldv,10.0)
-        
+
     if save:
         write_input('HYDRO_PARAMS_MESA',oldv)
     return oldv
-    
-    
+
+
 def lte_mesa(filein='VADAT_MESA',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     import mesaPlot as mp
-    
+
     oldv=vadat_mesa(filein,log_fold,model,tau)
-    
+
     m=mp.MESA()
     m.log_fold=log_fold
     m.loadHistory()
@@ -361,11 +361,11 @@ def lte_mesa(filein='VADAT_MESA',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True)
     ind_hist=(m.hist.model_number==m.prof.model_number)
 
     ind_prof=np.argmin(np.abs(m.prof.tau-tau))
-    
+
     set_value('DO_CL',oldv,'T')
     set_value('LIN_INT',oldv,'F')
     set_value('T_INIT_TAU',oldv,'1.5')
-    
+
     if save:
         write_input('VADAT_LTE_MESA',oldv)
     return oldv
@@ -376,24 +376,24 @@ def lte_model_spec(filein='MODEL_SPEC',save=True):
     set_value("ND",old,925)
     set_value("NP",old,940)
     set_value("NC",old,15)
-    
+
     if save:
         write_input('MODEL_SPEC_lte',old)
     return old
-    
+
 def lte_grid_params(fileout="GRID_PARAMS"):
     with open(fileout,'w') as f:
         print("25  37                !# of T values; # of Electron density values",file=f)
         print("1.0 25.0              !Tmin, Tmax (10^4K)",file=f)
         print("1.0E+06 1.0E+18       !Log(Ne_min), Log(Ne_max)",file=f)
-    
-    
+
+
 
 def freq2wave(freq):
     return SPEED_OF_LIGHT/(freq*10**15)
-    
+
 def freq2A(freq):
-    return freq2wave(freq)*10**10   
+    return freq2wave(freq)*10**10
 
 def freq2nm(freq):
     return freq2wave(freq)*10**9
@@ -405,21 +405,21 @@ def plot_obs(filename='obs_fin_5',model_spec='MODEL_SPEC',
     freq=x[0]
     jank=x[1]
     wave=freq2A(freq) #A
-    
+
     fig=plt.figure(figsize=(12,12))
     ax=fig.add_subplot(111)
-    
+
     if norm_cont:
         cont=read_obs_fin(file_cont)
         waveCont=freq2A(cont[0])
         contInterp=np.interp(wave,waveCont,cont[1])
         jank=jank/contInterp
-        
+
     ax.plot(np.log10(wave),np.log10(jank))
-    
+
     if trans:
         plot_trans(filename=transition_filename,fig=fig,ax=ax)
-    
+
     ax.set_xlabel('log10 A')
     ax.set_ylabel('log10 Jy')
     ax.set_ylim(-10.0,5.0)
@@ -433,7 +433,7 @@ def read_obs_fin(filename='obs_fin_5'):
         #skip first four lines
         skipLines(f,4)
         con_freq=readLineArray(f)
-        
+
         skipLines(f,3)
         flux=readLineArray(f)
 
@@ -447,18 +447,18 @@ def plot_trans(filename="../TRANS_INFO",fig=None,ax=None):
         raise ValueError("Must pass fig and ax instance")
 
     t=read_trans(filename)
-    
+
     for i in np.linspace(0,np.size(t)-1,100):
         ax.axvline(x=np.log10(t[int(i)]['lam']),linestyle='--',color='grey',alpha=0.8)
-        
+
 def read_rosseland_lte(filename="ROSSELAND_LTE_TAB"):
     return np.genfromtxt(filename,skip_header=7,names=["T","rho","pop","ne","chi_ross","chi_es","kap_ross"])
     return x
-    
+
 def compare_2_vadat(vadat1,vadat2):
     v1 = read_input(vadat1)
     v2 = read_input(vadat2)
-    
+
     for i in v1:
         found=False
         for j in v2:
@@ -468,15 +468,15 @@ def compare_2_vadat(vadat1,vadat2):
                 print(i['name'],i['value'],j['value'])
         if not found:
             print("No match ",i['name'])
-            
+
 def run_batch(link_only=False):
     filename="./batch.sh"
     make_exectuable(filename)
     args=[filename]
-    
+
     if link_only:
         args.append('aaa')
-        
+
     subprocess.run(args,shell=True)
 
 
@@ -487,7 +487,7 @@ def run_lte(cmfgensrc):
     safe_rm("OUTLTE")
     safe_rm("OUTGEN")
     subprocess.run([binary],shell=True)
-    
+
     #Check for nans
     if 'NaN' in open('ROSSELAND_LTE_TAB').read():
         raise ValueError("NaNs in ROSSELAND_LTE_TAB")
@@ -515,7 +515,7 @@ def run_cmfgen(cmfgensrc):
     result = result.stdout.decode('utf-8')
     with open('batch.log','w') as f:
         print(result,file=f)
-    
+
     if 'Error' in result or 'Traceback' in result:
         raise RuntimeError("CMFGEN failed")
 
@@ -525,29 +525,30 @@ def read_rvsig(filein="RVSIG_COL",header=19):
     with open(filein,'r') as f:
         for i in range(header):
             lines.append(f.readline())
-    
+
     data=np.genfromtxt(filein,skip_header=header,names=True,comments="!")
 
     return lines,data
 
 def extract_rvsig(filein):
     l,d=read_rvsig(filein)
-    
+
     rstar=float(l[7].split()[-1])
     rmax=float(l[15].split()[-1])
     nd=int(l[-2].split()[0])
-    
+
     return rstar,rmax,nd
-    
+
 def update_vadat_after_hydro(vadat="VADAT",rvsig="RVSIG_COL",inits="IN_ITS",model_spec="MODEL_SPEC"):
-    
+
     rstar,rmax,nd=extract_rvsig(rvsig)
-    
+
     vdata=read_input(vadat)
     set_value('RSTAR',vdata,rstar)
     set_value('RMAX',vdata,rmax)
+    set_value('DO_CL',vdata,'F')
     write_input(vadat,vdata)
-        
+
     its=read_input(inits)
     set_value('NUM_ITS',its,1)
     set_value('DO_LAM_IT',its,'T')
@@ -556,14 +557,14 @@ def update_vadat_after_hydro(vadat="VADAT",rvsig="RVSIG_COL",inits="IN_ITS",mode
     ms=read_input(model_spec)
     set_value('ND',ms,nd)
     set_value('NP',ms,nd+15)
-    write_input(model_spec,ms)   
+    write_input(model_spec,ms)
 
 def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     its=read_input(inits)
     set_value('NUM_ITS',its,100)
     set_value('DO_LAM_IT',its,'T')
     write_input(inits,its)
-    
+
     hy=read_input(hydro)
     set_value('N_ITS',hy,10)
     set_value('STRT_ITS',hy,10)
@@ -583,11 +584,11 @@ def check_cmfgen():
     check_hydro()
     check_mod_sum()
     check_obsflux()
-  
+
 def check_outgen(outgen="OUTGEN",end=5):
     with open(outgen,'r') as f:
         lines=f.readlines()
-        
+
     for i in lines[-end:-1]:
         if 'Error ' in i:
             print(i)

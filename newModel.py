@@ -3,19 +3,19 @@ import os
 import shutil
 import glob
 
-#Run new cmfgen model
+# Run new cmfgen model
 
-FOLDER="./"
-config_file='config.run'
+FOLDER = "./"
+config_file = 'config.run'
 
-with open(config_file,'r') as f:
-    MESA_LOGS=f.readline().strip()
-    MESA_MODEL=int(f.readline().strip())
-    OGRID=f.readline().strip()
-    CMFGENSRC=os.path.expandvars(f.readline().strip())
+with open(config_file, 'r') as f:
+    MESA_LOGS = f.readline().strip()
+    MESA_MODEL = int(f.readline().strip())
+    OGRID = f.readline().strip()
+    CMFGENSRC = os.path.expandvars(f.readline().strip())
 
-FOLDLTE=os.path.join(FOLDER,"lte")
-FOLDHYDRO=os.path.join(FOLDER,"hydro_dir")
+FOLDLTE = os.path.join(FOLDER,"lte")
+FOLDHYDRO = os.path.join(FOLDER,"hydro_dir")
 
 
 def mkdir(folder):
@@ -23,7 +23,7 @@ def mkdir(folder):
         os.mkdir(folder)
     except FileExistsError:
         pass
-    
+
 # Copy old model
 for i in ["batch.sh","IN_ITS","VADAT","MODEL_SPEC","GAMMAS_IN","He2_IN","HYDRO_DEFAULTS"]:
     shutil.copyfile(os.path.join(OGRID,i),os.path.join(FOLDER,i))
@@ -86,5 +86,3 @@ cmf.check_cmfgen()
 cmf.check_outgen()
 
 cmf.clean_iterations(CMFGENSRC)
-
-
