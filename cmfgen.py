@@ -453,7 +453,6 @@ def plot_trans(filename="../TRANS_INFO",fig=None,ax=None):
 
 def read_rosseland_lte(filename="ROSSELAND_LTE_TAB"):
     return np.genfromtxt(filename,skip_header=7,names=["T","rho","pop","ne","chi_ross","chi_es","kap_ross"])
-    return x
 
 def compare_2_vadat(vadat1,vadat2):
     v1 = read_input(vadat1)
@@ -566,9 +565,9 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     write_input(inits,its)
 
     hy=read_input(hydro)
-    set_value('N_ITS',hy,10)
-    set_value('STRT_ITS',hy,10)
-    set_value('FREQ_ITS',hy,10)
+    set_value('N_ITS',hy,15)
+    set_value('STRT_ITS',hy,15)
+    set_value('FREQ_ITS',hy,15)
     set_value('MAX_R',hy,100)
     write_input(hydro,hy)
 
