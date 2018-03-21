@@ -502,7 +502,7 @@ def make_exectuable(filename):
 def run_hydro(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','wind_hyd.exe')
     proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
-    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("","e","120","100"))
+    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("","e","75","100"))
 
 
 def run_cmfgen(cmfgensrc):
@@ -565,7 +565,7 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     write_input(inits,its)
 
     hy=read_input(hydro)
-    set_value('N_ITS',hy,15)
+    set_value('N_ITS',hy,5)
     set_value('STRT_ITS',hy,10)
     set_value('FREQ_ITS',hy,10)
     set_value('MAX_R',hy,100)
