@@ -593,3 +593,12 @@ def check_outgen(outgen="OUTGEN",end=5):
             print(i)
             raise RuntimeError("Error in OUTGEN")
     print("OUTGEN is clean")
+
+def run_spectra():
+    subprocess.run(['./batobs.sh'],shell=True)
+
+def mkdir(folder):
+    try:
+        os.mkdir(folder)
+    except FileExistsError:
+        pass
