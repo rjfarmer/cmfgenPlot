@@ -595,7 +595,9 @@ def check_outgen(outgen="OUTGEN",end=5):
     print("OUTGEN is clean")
 
 def run_spectra():
-    subprocess.run(['./batobs.sh'],shell=True)
+    filename="./batobs.sh"
+    make_exectuable(filename)
+    subprocess.run([filename],shell=True)
 
 def mkdir(folder):
     try:
