@@ -35,7 +35,7 @@ def cmfgenplot_src():
     return os.path.dirname(os.path.realpath(cmf.__file__))
     
 def cmfgen_defaults():
-    return os.path.join(cfmgenplot_src(),'defaults')
+    return os.path.join(cmfgenplot_src(),'defaults')
 
 
 def read_input(filename):
