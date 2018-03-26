@@ -1,0 +1,310 @@
+100.57636698  [RSTAR]            !Rp 125
+112.76487592  [RMAX]             !Rmax/Rp
+T             [DO_HYDRO]
+
+7             [VEL_LAW]          !Velocity Law
+RVSIG_COL     [VEL_OPT]
+2975.0        [VINF]             !Terminal (km\s)
+1.0           [BETA]             !Gamma (i.e. Beta=speed of velocity law)
+4.178E-6      [MDOT]             !Mass loss rate
+1.081D+6      [LSTAR]            !Luminosity (Lo)
+79.04072624   [MASS]             !Stars Mass (Mo)
+4.85D0        [TEFF]
+4.00D0        [LOGG]
+
+F            [DO_CL]		!Allow for clumping in the model?
+EXPO         [CL_LAW]		!Law to evaluate clumping factors.
+2            [N_CL_PAR]		!Number of clumping parameters
+0.1          [CL_PAR_1]		!1st clumping  parameter (X at Vinf)
+200	     [CL_PAR_2]
+
+1.0          [HYD/X]            !H/X abundance (by number)
+0.1          [HE/X]             !He/X abundance (by number)
+3.310D-4     [CARB/X]           !C/X abundance (by number)
+8.320D-5     [NIT/X]            !N/X abundance (by number)
+6.760D-4     [OXY/X]            !O/X abundance (by number)
+3.550D-5     [SIL/X]            !SIL/X abundance
+2.291E-07    [PHOS/X]           !P/X abundance (by number)  = P_sol
+2.140D-5     [SUL/X]            !SUL/X abundance
+3.160D-5     [IRON/X]           !IRON/X abundance
+
+F            [RD_CF_FILE]       !Read in continuum frequencies from file
+3.49897D-3   [MIN_CF]           !Minimum continuum frequency if calculating NU
+1000.000D0   [MAX_CF]           !Maximum continuum frequency if calculating NU
+1.10D0       [FRAC_SP]          !Fractional spacing for small frequencies
+1.05D0       [AMP_FAC]          !Amplification factor for large frequency ranges
+0.10D0       [MAX_BF]           !Maximum frequency spacing close to bf edge
+
+T            [DO_DIS]		!Allow for level dissolution
+200.0D0      [dV_LEV]           !Spacing in km/s on low side of bf edge.
+1.4          [AMP_DIS]          !Amplification factor on low side of bf edge.
+0.1          [MIN_DIS]          !Minimum frequency for level disolution.
+
+F            [CROSS]
+750.0        [V_CROSS]
+0.5          [EXT_LINE_VAR]     !Extent of variation region beyond resonance zon
+0.01         [ZNET_VAR_LIM]     !Iterate on net rates when ABS(ZNET-1) < ZNET_VA
+T            [WNET]             !Iterate on net rates for weak lines.
+0.10         [WK_LIM]           !Weak line opacity limit
+
+T            [DIF]              !Diffusion approx.
+T            [COH_ES]           !Assume coherent electorn scattering?
+F            [OLD_J]
+F            [MIX_COH]          !Mix coherencies in variation of J
+0.1          [ES_FAC]           !How close RJ and RJ_ES to use COH
+
+LOGMON       [METHOD]           !Use log interp to compute chi.LOGLOG
+N_ON_J       [N_TYPE]           !How to handle N in MOM_J_CMF
+20000.0D0    [VFRAC_FG]         !Maximum velocity spacing along ray in FG_J_CMF_
+20000.0D0    [VFRAC_MOM]        !Maximum velocity spacing along ray in MOM_J_CMF
+INT/INS      [FG_OPT]		!Solution options for FG
+T            [THK_CONT]         !Thick boundary condition for continuum ?
+T            [TRAP_J]           !Use trapazoidal wights to compute J ?
+
+2.0D0        [TDOP]             !Temperature for Doppler profile
+4.0D0        [AMASS_DOP]        !Atomic mass for Doppler profile
+20.0D0       [VTURB]            !Turbulent Velocity
+
+6.0          [MAX_DOP]          !Max. half-width of resonace zone
+1.0D0        [FRAC_DOP]         !Spacing in CMF resonace zone [in Doppler widths
+200.0        [dV_CMF_PROF]      !Spacing (in km/s) across CMF profile.
+400.0        [dV_CMF_WING]      !Spacing in e.s. line wings of CMF profile.
+2500.0       [ES_WING_EXT]      !Ext. of non-coh e.s. wings beyond res. zone (in
+3.0          [R_CMF_WING_EXT]   !Ext. of coh. e.s. wings beyond res. zone (in Vi
+
+1.1          [OBS_EXT_RAT]      !Half-Width of Observed profile in Vinf (>= 1.0)
+30.0         [dV_OBS_PROF]      !Spacing (in km/s) across observed profile (km/s
+200.0        [dV_OBS_WING]      !Spacing in e.s. line wings (km/s).
+2000.0       [dV_OBS_BIG]       !Spacing between lines (km/s).
+
+F            [USE_FIXED_J]      !Use fixed J
+F            [FLUX_CAL_ONLY]    !Do a flux calculation only?
+F            [EXT_FRM_SOL]	!Extend formal solutiona factor of 10 in R
+T            [INS_F_FRM_SOL]    !Insert extra frequencies in the formal sol?
+INT          [FRM_OPT]
+F            [DO_SOB_LINES]     !Compute rates for SObolev transitions in flux m
+F            [SOB_FREQ_IN_OBS]  !
+
+BLANK        [GLOBAL_LINE]      !Global line switch (BLANK, SOB, CMF, NONE)
+F            [LAM_SET]          !Swith to SOB for long wavelengths?
+0.0E+03      [F_LAM_BEG]        !Lambda to begin flux calculation.
+7.0E+03      [F_LAM_END]        !Lambda to end flux calculation.
+1.0D-3       [GF_CUT]           !Omit lines with gf < GFCUT and lower level
+9            [GF_LEV_CUT]       !> GF_LEV_CUT
+
+10           [MIN_TRANS]	!Minimum # of trans from level before cut.
+
+T            [THK_LINE]         !Thk line boundary condition ?
+T            [CHK_L_POS]        !Check for negative line opacity?
+ESEC_CHK     [NEG_OPAC_OPT]     !Negative opacity option
+F            [He2_RES=0]        !Set rates in He2 resonance lines to zero?
+26           [AT_CUT]
+F            [ALLOW_OL]         !Include line overlap?
+50.0         [OL_DIF]           !Max velocity dif for overlap (km/s)?
+
+F            [INC_CHG] 		!Include charge exchange reactions
+T            [INC_TWO]  	!Include two photon transitions
+F            [INC_RAY]          !include Rayleigh scattering
+F            [INC_AD] 		!Include adiabatic cooling
+F            [INC_ADV]          !Include advection terms in SE equilibrium equat
+T            [SCL_LN]           !Scale line cooling/heating rates
+0.5          [SCL_LN_FAC]       !
+
+T            [INC_XRAYS]
+F            [FF_XRAYS]
+T            [X_SM_WIND]
+1000         [VS_XRAYS]
+6.0D-02      [FIL_FAC_1]
+200          [T_SHOCK_1]
+500          [V_SHOCK_1]
+8.0D-03      [FIL_FAC_2]
+600.0D0      [T_SHOCK_2]
+500          [V_SHOCK_2]
+F            [XSLOW]
+5.0D-09      [XFI1_BEG]
+1.0D-09      [XFI2_BEG]
+100.0D0      [XSCL_FAC]
+
+F            [RD_IN_R_GRID]     !Read in a predetermined R grid ?
+T            [LIN_INT]          !Regrid pops (set F if NEW model) (T=>no Temp it
+T            [POP_SCALE]        !Scale pops to satisfy abundance Eq.
+T            [IT_ON_T]          !Iterate on initial T distribution ?
+0.5          [T_INIT_TAU]       !For INIT_TEMP guess
+0.3          [GREY_TAU]         !Set T to TGREY for tau > ?
+F            [TDEK]             !Option to read T in Dekoter's file
+
+CMF          [TRANS_HI]         !Method for treating Hydrogen lines ?
+CMF          [TRANS_HeI]        !Method for treating HeI lines ?
+CMF          [TRANS_He2]        !Method for treating He2 lines ?
+
+CMF          [TRANS_CI]         !Method for treating CI lines ?
+CMF          [TRANS_C2]         !Method for treating C2 lines ?
+CMF          [TRANS_CIII]       !Method for treating CIII lines ?
+CMF          [TRANS_CIV]        !Method for treating CIV lines ?
+
+CMF          [TRANS_NI]         !Method for treating NI lines ?
+CMF          [TRANS_N2]         !Method for treating N2 lines ?
+CMF          [TRANS_NIII]       !Method for treating NIII lines ?
+CMF          [TRANS_NIV]        !Method for treating NIV lines ?
+CMF          [TRANS_NV]         !Method for treating NV lines ?
+
+SOB          [TRANS_OI]         !Method for treating OIII lines ?
+SOB          [TRANS_O2]         !Method for treating OIII lines ?
+SOB          [TRANS_OIII]         !Method for treating OIII lines ?
+SOB          [TRANS_OIV]          !Method for treating OIV lines ?
+SOB          [TRANS_OV]           !Method for treating OV lines ?
+SOB          [TRANS_OSIX]         !Method for treating OSIX lines ?
+
+SOB          [TRANS_Sk2]         !Method for treating SiII lines ?
+SOB          [TRANS_SkIII]         !Method for treating SiIII lines ?
+SOB          [TRANS_SkIV]         !Method for treating SiIV lines ?
+
+SOB          [TRANS_SIII]         !Method for treating SIII lines ?
+SOB          [TRANS_SIV]         !Method for treating SIV lines ?
+SOB          [TRANS_SV]          !Method for treating SV lines ?
+SOB          [TRANS_SSIX]        !Method for treating SSIX lines ?
+
+SOB          [TRANS_FeIII]         !Method for treating feIII lines ?
+SOB          [TRANS_FeIV]         !Method for treating feIII lines ?
+SOB          [TRANS_FeV]         !Method for treating feIII lines ?
+SOB          [TRANS_FeSIX]         !Method for treating feIII lines ?
+SOB          [TRANS_FeSEV]         !Method for treating feIII lines ?
+
+
+F            [DIE_AS_LINE]      !Treat dielectronic as non-overlapping lines
+1000.0D0     [VSM_DIE]          !Smoothing velocity (km/s)
+3000.0D0     [SIG_GAU_KMS]      !Sigma of Gaussian used to smooth photoionizatio
+
+F,F          [DIE_HI]           !Include LTDR for HI (Use WI calcs?)
+F,F          [DIE_HeI]          !Include LTDR for HeI (Use WI calcs?)
+F,F          [DIE_He2]          !Include LTDR for He2 (Use WI calcs?)
+
+F,F          [DIE_CI]           !Include LTDR for CI (Use WI calcs?)
+F,F          [DIE_C2]           !Include LTDR for CIII (Use WI calcs?)
+F,T          [DIE_CIII]         !Include LTDR for CIII (Use WI calcs?)
+F,F          [DIE_CIV]          !Include LTDR for CIV (Use WI calcs?)
+
+F,F          [DIE_NI]           !Include LTDR for NI (Use WI calcs?)
+F,F          [DIE_N2]           !Include LTDR for N2 (Use WI calcs?)
+F,F          [DIE_NIII]         !Include LTDR for NIII (Use WI calcs?)
+F,T          [DIE_NIV]          !Include LTDR for NIV (Use WI calcs?)
+F,F          [DIE_NV]           !Include LTDR for NV (Use WI calcs?)
+
+F,F          [DIE_OI]           !Include LTDR for OI (Use WI calcs?)
+F,F          [DIE_O2]           !Include LTDR for O2 (Use WI calcs?)
+F,F          [DIE_OIII]         !Include LTDR for OIII (Use WI calcs?)
+F,F          [DIE_OIV]          !Include LTDR for OIV (Use WI calcs?)
+T,T          [DIE_OV]           !Include LTDR for OV (Use WI calcs?)
+F,F          [DIE_OSIX]         !Include LTDR for OSIX (Use WI calcs?)
+
+F,F          [DIE_Sk2]          !Include LTDR for Sk2 (Use WI calcs?)
+F,F          [DIE_SkIII]        !Include LTDR for SkIII (Use WI calcs?)
+F,F          [DIE_SkIV]         !Include LTDR for SkIV  (Use WI calcs?)
+
+F,F          [DIE_PIII]          !Include LTDR for PIII (Use WI calcs?)
+F,F          [DIE_PIV]          !Include LTDR for PIV (Use WI calcs?)
+F,F          [DIE_PV]           !Include LTDR for PV (Use WI calcs?)
+F,F          [DIE_PPIX]         !Include LTDR for PPIX (Use WI calcs?)
+
+F,F          [DIE_SIII]          !Include LTDR for SIII (Use WI calcs?)
+F,F          [DIE_SIV]          !Include LTDR for SIV (Use WI calcs?)
+F,F          [DIE_SV]           !Include LTDR for SV (Use WI calcs?)
+F,F          [DIE_SSIX]         !Include LTDR for SSIX (Use WI calcs?)
+
+F,F          [DIE_FeIII]          !Include LTDR for SIV (Use WI calcs?)
+F,F          [DIE_FeIV]          !Include LTDR for SIV (Use WI calcs?)
+F,F          [DIE_FeV]          !Include LTDR for SIV (Use WI calcs?)
+F,F          [DIE_FeSIX]          !Include LTDR for SIV (Use WI calcs?)
+F,F          [DIE_FeSEV]          !Include LTDR for SIV (Use WI calcs?)
+
+
+0            [FIX_HI]           !Fix ? levels for HI
+0            [FIX_HYD]          !Fix ? levels for HII
+0            [FIX_HeI]          !Fix ? levels for HeI
+0            [FIX_He2]          !Fix ? levels for He2
+0            [FIX_HE]           !Fix ? levels for HeIII
+
+0            [FIX_CI]           !Fix ? levels for CI
+0            [FIX_C2]           !Fix ? levels for CIII
+0            [FIX_CIII]         !Fix ? levels for CIII
+0            [FIX_CIV]          !Fix ? levels for CIV
+0            [FIX_CARB]         !Fix ? levels for CV
+
+0            [FIX_NI]           !Fix ? levels for NI
+0            [FIX_N2]           !Fix ? levels for N2
+0            [FIX_NIII]         !Fix ? levels for NIII
+0            [FIX_NIV]          !Fix ? levels for NIV
+0            [FIX_NV]           !Fix ? levels for NV
+0            [FIX_NIT]          !Fix ? levels for NSIX
+
+0            [FIX_OI]         !Fix ? levels for OI
+0            [FIX_O2]         !Fix ? levels for O2
+0            [FIX_OIII]         !Fix ? levels for OIII
+0            [FIX_OIV]          !Fix ? levels for OIV
+0            [FIX_OV]           !Fix ? levels for OV
+0            [FIX_OSIX]         !Fix ? levels for OSIX
+0            [FIX_OXY]          !Fix ? levels for OSEV
+
+0            [FIX_Sk2]          !Fix ? levels for Sk2
+0            [FIX_SkIII]        !Fix ? levels for SkIII
+0            [FIX_SkIV]         !Fix ? levels for SkIV
+0            [FIX_SIL]          !Fix ? levels for Silicon
+
+0            [FIX_SIII]          !Fix ? levels for SIII
+0            [FIX_SIV]          !Fix ? levels for SIV
+0            [FIX_SV]           !Fix ? levels for SV
+0            [FIX_SSIX]         !Fix ? levels for SSIX
+0            [FIX_SUL]          !Fix ? levels for SUL
+
+0            [FIX_FeIII]          !Fix ? levels for SIV
+0            [FIX_FeIV]          !Fix ? levels for SIV
+0            [FIX_FeV]          !Fix ? levels for SIV
+0            [FIX_FeSIX]          !Fix ? levels for SIV
+0            [FIX_FeSEV]          !Fix ? levels for SIV
+0            [FIX_IRON]          !Fix ? levels for SIV
+
+
+F            [FIX_NE]           !Fixed Electron density ?
+F            [FIX_IMP]          !Fix impurity species automatically ?
+F            [FIX_T]            !Fixed T ?
+T            [FIX_T_AUTO]       !Automatic variable T
+0.0          [TAU_SCL_T]        !Fix T for this optical depth. 1.0?
+TRIDIAG      [SOL_METH]         !Msol (bmgsit)
+MAJOR        [SCALE_OPT]        !Scaling option (MAJOR, LOCAL, NONE, or GLOBAL)
+5.0D-02      [EPS_TERM]         !Terminate when %frac change smaller
+10.0D0       [MAX_LIN]		!Maximum fractional change allowed for linearization.
+1.0D+10      [MAX_LAM]		!Maximum fractional change allowed for LAMBDA iteration.
+1.0D+200     [MAX_CHNG]         !Terminate with error if %frac change > MAX_CHNG
+F            [COMP_BA]          !Compute BA matrix
+T            [STORE_BA_INV]     !Write BA matrix out
+T            [WR_PRT_INV]       !Write BA matrix out
+2            [N_FIX_BA]         !Number of iterations to hold BA fixed:
+T            [STORE_BA]         !Write BA matrix out
+1.0D-04      [BA_CHK_FAC]       !<< 1 (Values close to 1 reduce BA compuattion)
+10.0D0       [FIX_BA]           !Fix BA if %change smaller
+
+100.0D0      [LAM_VAL]          !Do LAMBDA iterations if %change >.
+2            [NUM_LAM]          !Number of Lambda iteration per full linearizati
+
+F            [RD_SOL]           !Read in solution matrix
+T            [JC_W_EDD]         !Use Eddington factors to compute continuum J
+T            [JBAR_W_EDD]       !Use Eddington factors to compute JBAR for lines
+F            [INC_GRID]         !Do an error calculation ?
+F            [ALL_FREQ]         !
+3.19         [ACC_END]          !
+2            [N_INS]            !NPINS
+1            [ST_INT]           !Interpolate from 1 to ?
+30           [END_INT]          !Interpolate from 1 to ?
+50           [ND_QUAD]          !Quadratic interpolation from 50 to ND
+LOG          [INTERP_TYPE]      !LOG or LIN plane
+
+4000         [N_PAR]            !Rate of BA incremantation by BA_PAR.
+
+F            [COMP_F]           !Compute new Continuum f values ?
+1.0D-04      [ACC_F]            !Convergence accuracy for F
+
+T            [DO_NG]            !Use NG acceleration
+10.0D0       [BEG_NG]           !Start  NG when percentage change <
+25           [IBEG_NG]
+10           [BW_NG]
+20           [ITS/NG]           !Number of iterations per NG aceleration

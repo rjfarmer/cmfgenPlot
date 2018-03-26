@@ -31,6 +31,13 @@ PI=3.141592653589793238462643E0
 FUN_PI=3.141592653589793238462643E0
 SECS_IN_YEAR=31557600.0E0     		#365.25*24*60*60
 
+def cmfgenplot_src():
+    return os.path.dirname(os.path.realpath(cmf.__file__))
+    
+def cmfgen_defaults():
+    return os.path.join(cfmgenplot_src(),'defaults')
+
+
 def read_input(filename):
     out=collections.OrderedDict()
     try:
@@ -594,9 +601,20 @@ def check_outgen(outgen="OUTGEN",end=5):
             raise RuntimeError("Error in OUTGEN")
     print("OUTGEN is clean")
 
-def run_spectra():
+def run_spectra(vadat='../VADAT'):
     filename="./batobs.sh"
     make_exectuable(filename)
+    
+    #Fix masses
+    v = read_input(vadat)
+    mass = get_value('MASS',v)
+    with open(filename,'r') as f:
+        l=f.readlines()
+    l=[i.replace('XXX',mass) for i in l]
+    with open(filename,'w') as f:
+        for i in l:
+            f.write(i)
+    
     subprocess.run([filename],shell=True)
 
 def mkdir(folder):
