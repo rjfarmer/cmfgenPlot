@@ -12,7 +12,7 @@ RVSIG_COL     [VEL_OPT]
 4.85D0        [TEFF]
 4.00D0        [LOGG]
 
-F            [DO_CL]		!Allow for clumping in the model?
+T            [DO_CL]		!Allow for clumping in the model?
 EXPO         [CL_LAW]		!Law to evaluate clumping factors.
 2            [N_CL_PAR]		!Number of clumping parameters
 0.1          [CL_PAR_1]		!1st clumping  parameter (X at Vinf)
