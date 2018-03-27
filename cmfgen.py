@@ -32,7 +32,7 @@ FUN_PI=3.141592653589793238462643E0
 SECS_IN_YEAR=31557600.0E0     		#365.25*24*60*60
 
 def cmfgenplot_src():
-    return os.path.dirname(os.path.realpath(cmf.__file__))
+    return os.path.dirname(os.path.realpath(__file__))
     
 def cmfgen_defaults():
     return os.path.join(cmfgenplot_src(),'defaults')
