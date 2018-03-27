@@ -309,7 +309,7 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
 
     set_value('PHOS/X',oldv,-10**-15) # Cant be zero
     set_value('LIN_INT',oldv,'F')
-    set_value('DO_CL',oldv,'F')
+    set_value('DO_CL',oldv,'T')
 
     #Normalise
     abunSum=np.sum(abun)
@@ -552,7 +552,7 @@ def update_vadat_after_hydro(vadat="VADAT",rvsig="RVSIG_COL",inits="IN_ITS",mode
     vdata=read_input(vadat)
     set_value('RSTAR',vdata,rstar)
     set_value('RMAX',vdata,rmax)
-    set_value('DO_CL',vdata,'F')
+    set_value('DO_CL',vdata,'T')
     write_input(vadat,vdata)
 
     its=read_input(inits)
