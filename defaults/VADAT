@@ -303,7 +303,7 @@ LOG          [INTERP_TYPE]      !LOG or LIN plane
 F            [COMP_F]           !Compute new Continuum f values ?
 1.0D-04      [ACC_F]            !Convergence accuracy for F
 
-T            [DO_NG]            !Use NG acceleration
+F            [DO_NG]            !Use NG acceleration
 10.0D0       [BEG_NG]           !Start  NG when percentage change <
 25           [IBEG_NG]
 10           [BW_NG]

@@ -334,8 +334,8 @@ def hydro_mesa(filein='',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
     ind_prof=np.argmin(np.abs(m.prof.tau-tau))
     rr=10**m.prof.logR[ind_prof]*6.96
     set_value('REF_R',oldv,rr)
-    set_value('CON_R',oldv,rr+1.0)
-    set_value('RSTAR',oldv,rr-1.0)
+    set_value('CON_R',oldv,rr+5.0)
+    set_value('RSTAR',oldv,rr-5.0)
     set_value('VINF',oldv,1.5*m.hist.surf_escape_v[ind_hist][0]/(100.0*1000.0))
     set_value('MDOT',oldv,safe_mdot(m,ind_hist))
     set_value('TEFF',oldv,10**(m.prof.logT[ind_prof]-4))
@@ -509,7 +509,7 @@ def make_exectuable(filename):
 def run_hydro(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','wind_hyd.exe')
     proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
-    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("","e","75","100"))
+    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("","e","85","100"))
 
 
 def run_cmfgen(cmfgensrc):
@@ -558,6 +558,7 @@ def update_vadat_after_hydro(vadat="VADAT",rvsig="RVSIG_COL",inits="IN_ITS",mode
     its=read_input(inits)
     set_value('NUM_ITS',its,1)
     set_value('DO_LAM_IT',its,'T')
+    set_value('DO_T_AUTO',its,'T')
     write_input(inits,its)
 
     ms=read_input(model_spec)
@@ -569,6 +570,7 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     its=read_input(inits)
     set_value('NUM_ITS',its,100)
     set_value('DO_LAM_IT',its,'T')
+    set_value('DO_T_AUTO',its,'T')
     write_input(inits,its)
 
     hy=read_input(hydro)
