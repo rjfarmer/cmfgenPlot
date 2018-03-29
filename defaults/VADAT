@@ -16,7 +16,7 @@ T            [DO_CL]		!Allow for clumping in the model?
 EXPO         [CL_LAW]		!Law to evaluate clumping factors.
 2            [N_CL_PAR]		!Number of clumping parameters
 0.1          [CL_PAR_1]		!1st clumping  parameter (X at Vinf)
-200	     [CL_PAR_2]
+100	         [CL_PAR_2]
 
 1.0          [HYD/X]            !H/X abundance (by number)
 0.1          [HE/X]             !He/X abundance (by number)
@@ -73,8 +73,8 @@ T            [TRAP_J]           !Use trapazoidal wights to compute J ?
 3.0          [R_CMF_WING_EXT]   !Ext. of coh. e.s. wings beyond res. zone (in Vi
 
 1.1          [OBS_EXT_RAT]      !Half-Width of Observed profile in Vinf (>= 1.0)
-30.0         [dV_OBS_PROF]      !Spacing (in km/s) across observed profile (km/s
-200.0        [dV_OBS_WING]      !Spacing in e.s. line wings (km/s).
+100.0         [dV_OBS_PROF]      !Spacing (in km/s) across observed profile (km/s
+400.0        [dV_OBS_WING]      !Spacing in e.s. line wings (km/s).
 2000.0       [dV_OBS_BIG]       !Spacing between lines (km/s).
 
 F            [USE_FIXED_J]      !Use fixed J
@@ -129,7 +129,7 @@ F            [RD_IN_R_GRID]     !Read in a predetermined R grid ?
 T            [LIN_INT]          !Regrid pops (set F if NEW model) (T=>no Temp it
 T            [POP_SCALE]        !Scale pops to satisfy abundance Eq.
 T            [IT_ON_T]          !Iterate on initial T distribution ?
-0.5          [T_INIT_TAU]       !For INIT_TEMP guess
+0.3          [T_INIT_TAU]       !For INIT_TEMP guess
 0.3          [GREY_TAU]         !Set T to TGREY for tau > ?
 F            [TDEK]             !Option to read T in Dekoter's file
 
