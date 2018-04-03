@@ -27,6 +27,7 @@ RUN_SPECTRA=True
 
 
 if RUN_SETUP:
+    print("RUN_SETUP")
     # Copy old model
     for i in ["batch.sh","IN_ITS","VADAT","MODEL_SPEC","GAMMAS_IN","He2_IN","HYDRO_DEFAULTS"]:
         shutil.copyfile(os.path.join(OGRID,i),os.path.join(FOLDER,i))
@@ -41,6 +42,7 @@ if RUN_SETUP:
     cmf.vadat_mesa(filein=os.path.join(FOLDER,"VADAT"),log_fold=MESA_LOGS,model=MESA_MODEL)
 
 if RUN_LTE:
+    print("RUN_LTE")
     #lte work
     cmf.mkdir(FOLDLTE)
     
@@ -60,6 +62,7 @@ if RUN_LTE:
     os.chdir('../')
 
 if RUN_HYDRO:
+    print("RUN_HYDOR")
     #Hydro
     cmf.mkdir(FOLDHYDRO)
     shutil.copyfile(os.path.join(FOLDLTE,"ROSSELAND_LTE_TAB"),os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"))
@@ -71,6 +74,7 @@ if RUN_HYDRO:
     os.chdir('../')
 
 if RUN_CMFGEN:
+    print("RUN_CMFGEN")
     #Setup for cmfgen
     shutil.copyfile(os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"),"ROSSELAND_LTE_TAB")
     shutil.copyfile(os.path.join(FOLDHYDRO,"RVSIG_COL_NEW"),"RVSIG_COL")
@@ -80,8 +84,8 @@ if RUN_CMFGEN:
     shutil.copyfile(os.path.join(OGRID,"GREY_SCL_FACOUT"),"GREY_SCL_FAC_IN")
     #needs error checking
     # Test options
-    cmf.run_cmfgen(CMFGENSRC)
-    cmf.check_outgen()
+    #cmf.run_cmfgen(CMFGENSRC)
+    #cmf.check_outgen()
     
     cmf.update_after_test()
     #needs error checking
@@ -93,6 +97,7 @@ if RUN_CMFGEN:
     cmf.clean_iterations(CMFGENSRC)
     
 if RUN_SPECTRA:
+    print("RUN_SPECTRA")
     cmf.mkdir(FOLDSPECTRA)
     os.chdir(FOLDSPECTRA)
     shutil.copyfile(os.path.join(OGRID,'obs','batobs.sh'),'batobs.sh')
