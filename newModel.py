@@ -11,6 +11,11 @@ config_file = 'config.run'
 with open(config_file, 'r') as f:
     MESA_LOGS = f.readline().strip()
     MESA_MODEL = int(f.readline().strip())
+    RUN_SETUP=bool(f.readline().strip())
+    RUN_LTE=bool(f.readline().strip())
+    RUN_HYDRO=bool(f.readline().strip())
+    RUN_CMFGEN=bool(f.readline().strip())
+    RUN_SPECTRA=bool(f.readline().strip())
     
 CMFGENSRC = os.path.expandvars("$cmfdist")
 OGRID = cmf.cmfgen_defaults()
@@ -18,13 +23,6 @@ OGRID = cmf.cmfgen_defaults()
 FOLDLTE = os.path.join(FOLDER,"lte")
 FOLDHYDRO = os.path.join(FOLDER,"hydro_dir")
 FOLDSPECTRA = os.path.join(FOLDER,"obs")
-
-RUN_SETUP=True
-RUN_LTE=True
-RUN_HYDRO=True
-RUN_CMFGEN=True
-RUN_SPECTRA=True
-
 
 if RUN_SETUP:
     print("RUN_SETUP")
