@@ -570,8 +570,8 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     set_value('NUM_ITS',its,100)
     set_value('DO_LAM_IT',its,'T')
     set_value('DO_T_AUTO',its,'T')
-    set_value('LIN_INT',oldv,'F')
-    set_value('DO_CL',oldv,'T')
+    set_value('LIN_INT',its,'F')
+    set_value('DO_CL',its,'T')
     write_input(inits,its)
 
     hy=read_input(hydro)
