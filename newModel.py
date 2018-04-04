@@ -100,6 +100,6 @@ if RUN_SPECTRA:
     print("RUN_SPECTRA")
     cmf.mkdir(FOLDSPECTRA)
     os.chdir(FOLDSPECTRA)
-    shutil.copyfile(os.path.join(OGRID,'obs','batobs.sh'),'batobs.sh')
-    shutil.copyfile(os.path.join(OGRID,'obs','CMF_FLUX_PARAM_INIT'),'CMF_FLUX_PARAM_INIT')
+    shutil.copyfile(os.path.join(OGRID,'batobs.sh'),'batobs.sh')
+    shutil.copyfile(os.path.join(OGRID,'CMF_FLUX_PARAM_INIT'),'CMF_FLUX_PARAM_INIT')
     cmf.run_spectra()
