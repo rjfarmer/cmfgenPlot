@@ -102,11 +102,11 @@ F            [He2_RES=0]        !Set rates in He2 resonance lines to zero?
 F            [ALLOW_OL]         !Include line overlap?
 50.0         [OL_DIF]           !Max velocity dif for overlap (km/s)?
 
-F            [INC_CHG] 		!Include charge exchange reactions
+T            [INC_CHG] 		!Include charge exchange reactions
 T            [INC_TWO]  	!Include two photon transitions
 F            [INC_RAY]          !include Rayleigh scattering
-F            [INC_AD] 		!Include adiabatic cooling
-F            [INC_ADV]          !Include advection terms in SE equilibrium equat
+T            [INC_AD] 		!Include adiabatic cooling
+T            [INC_ADV]          !Include advection terms in SE equilibrium equat
 T            [SCL_LN]           !Scale line cooling/heating rates
 0.5          [SCL_LN_FAC]       !
 
@@ -126,7 +126,7 @@ F            [XSLOW]
 100.0D0      [XSCL_FAC]
 
 F            [RD_IN_R_GRID]     !Read in a predetermined R grid ?
-T            [LIN_INT]          !Regrid pops (set F if NEW model) (T=>no Temp it
+F            [LIN_INT]          !Regrid pops (set F if NEW model) (T=>no Temp it
 T            [POP_SCALE]        !Scale pops to satisfy abundance Eq.
 T            [IT_ON_T]          !Iterate on initial T distribution ?
 0.3          [T_INIT_TAU]       !For INIT_TEMP guess
@@ -266,7 +266,7 @@ F,F          [DIE_FeSEV]          !Include LTDR for SIV (Use WI calcs?)
 
 F            [FIX_NE]           !Fixed Electron density ?
 F            [FIX_IMP]          !Fix impurity species automatically ?
-T            [FIX_T]            !Fixed T ?
+F            [FIX_T]            !Fixed T ?
 T            [FIX_T_AUTO]       !Automatic variable T
 0.0          [TAU_SCL_T]        !Fix T for this optical depth. 1.0?
 TRIDIAG      [SOL_METH]         !Msol (bmgsit)
