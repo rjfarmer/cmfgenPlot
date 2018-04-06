@@ -266,7 +266,7 @@ F,F          [DIE_FeSEV]          !Include LTDR for SIV (Use WI calcs?)
 
 F            [FIX_NE]           !Fixed Electron density ?
 F            [FIX_IMP]          !Fix impurity species automatically ?
-F            [FIX_T]            !Fixed T ?
+T            [FIX_T]            !Fixed T ?
 T            [FIX_T_AUTO]       !Automatic variable T
 0.0          [TAU_SCL_T]        !Fix T for this optical depth. 1.0?
 TRIDIAG      [SOL_METH]         !Msol (bmgsit)
