@@ -82,8 +82,8 @@ if RUN_CMFGEN:
     shutil.copyfile(os.path.join(OGRID,"GREY_SCL_FACOUT"),"GREY_SCL_FAC_IN")
     #needs error checking
     # Test options
-    #cmf.run_cmfgen(CMFGENSRC)
-    #cmf.check_outgen()
+    cmf.run_cmfgen(CMFGENSRC)
+    cmf.check_outgen()
     
     cmf.update_after_test()
     #needs error checking

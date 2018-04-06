@@ -570,16 +570,15 @@ def update_after_test(inits="IN_ITS",hydro="HYDRO_DEFAULTS"):
     set_value('NUM_ITS',its,100)
     set_value('DO_LAM_IT',its,'T')
     set_value('DO_T_AUTO',its,'T')
-    set_value('LIN_INT',its,'F')
-    set_value('DO_CL',its,'T')
     write_input(inits,its)
 
     hy=read_input(hydro)
     set_value('N_ITS',hy,10)
-    set_value('STRT_ITS',hy,10)
+    set_value('STRT_ITS',hy,12)
     set_value('FREQ_ITS',hy,10)
     set_value('MAX_R',hy,100)
     write_input(hydro,hy)
+    safe_rm("OUTGEN")
 
 def clean_iterations(cmfgensrc=''):
     binary=os.path.join(cmfgensrc,'exe','rewrite_scr.exe')
