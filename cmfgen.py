@@ -82,6 +82,9 @@ def skipLines(f,n):
     for i in range(n):
         _=f.readline()
 
+def cleanup():
+    cmd = 'find . -not -name "config.run" -not -name "submit-obs.sh" -not -name "slurm*" -delete'
+    subprocess.run([cmd],shell=True)
 
 def write_input(filename,data):
     with open(filename,'w') as f:
