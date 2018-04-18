@@ -60,7 +60,7 @@ if RUN_LTE:
     os.chdir('../')
 
 if RUN_HYDRO:
-    print("RUN_HYDOR")
+    print("RUN_HYDRO")
     #Hydro
     cmf.mkdir(FOLDHYDRO)
     shutil.copyfile(os.path.join(FOLDLTE,"ROSSELAND_LTE_TAB"),os.path.join(FOLDHYDRO,"ROSSELAND_LTE_TAB"))
