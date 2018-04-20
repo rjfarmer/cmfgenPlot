@@ -28,8 +28,7 @@ EXPO         [CL_LAW]		!Law to evaluate clumping factors.
 1.08806879866e-05     [OXY/X]     ! O/X abundance (by number)
 -4.77294093292e-05     [SIL/X]     ! Si/X abundance (by mass)
 -8.53662750188e-05     [IRON/X]     ! Fe/X abundance (by mass)
--4.8E-07    [COB]               !Co mass fraction (solar=3.43E-06)
--0     [NICK/X]     ! Ni/X abundance (by mass)
+
 
 F            [RD_CF_FILE]       !Read in continuum frequencies from file
 0.00149897   [MIN_CF]           !Minimum continuum frequency if calculating NU
@@ -162,17 +161,6 @@ SOB          [TRANS_FeVIII]       !Method for treating OVIII lines ?
 SOB          [TRANS_FeIX]         !Method for treating OIX lines ?
 SOB          [TRANS_FeX]          !Method for treating OX lines ?
 
-SOB          [TRANS_Nk2]          !Method for treating Nk2 lines ?
-SOB          [TRANS_NkIII]        !Method for treating NkIII lines ?
-SOB          [TRANS_NkIV]         !Method for treating NkIV lines ?
-SOB          [TRANS_NkV]          !Method for treating NkV lines ?
-SOB          [TRANS_NkSIX]        !Method for treating NkSIX lines ?
-SOB          [TRANS_NkSEV]        !Method for treating NkSEV lines ?
-SOB          [TRANS_NkVIII]       !Method for treating NkVIII lines ?
-SOB          [TRANS_NkIX]         !Method for treating NkIX lines ?
-SOB          [TRANS_NkX]          !Method for treating NkX lines ?
-
-
 F            [DIE_AS_LINE]      !Treat dielectronic as non-overlapping lines
 1000.0D0     [VSM_DIE]          !Smoothing velocity (km/s)
 1000.0D0     [SIG_GAU_KMS]
@@ -217,15 +205,10 @@ F,F          [DIE_FeVIII]        !Include LTDR for FeVIII (Use WI calcs?)
 F,F          [DIE_FeIX]          !Include LTDR for FeIX (Use WI calcs?)
 F,F          [DIE_FeX]           !Include LTDR for FeX (Use WI calcs?)
 
-F,F          [DIE_Nk2]           !Include LTDR for Nk2 (Use WI calcs?)
-F,F          [DIE_NkIII]         !Include LTDR for NkIII (Use WI calcs?)
-F,F          [DIE_NkIV]          !Include LTDR for NkIV (Use WI calcs?)
-F,F          [DIE_NkV]           !Include LTDR for NkV (Use WI calcs?)
-F,F          [DIE_NkSIX]         !Include LTDR for NkSIX (Use WI calcs?)
-F,F          [DIE_NkSEV]         !Include LTDR for NkSEV (Use WI calcs?)
-F,F          [DIE_NkVIII]        !Include LTDR for NkVIII (Use WI calcs?)
-F,F          [DIE_NkIX]          !Include LTDR for NkIX (Use WI calcs?)
-F,F          [DIE_NkX]           !Include LTDR for NkX (Use WI calcs?)
+F,F          [DIE_PIII]          !Include LTDR for PIII (Use WI calcs?)
+F,F          [DIE_PIV]          !Include LTDR for PIV (Use WI calcs?)
+F,F          [DIE_PV]           !Include LTDR for PV (Use WI calcs?)
+F,F          [DIE_PPIX]         !Include LTDR for PPIX (Use WI calcs?)
 
 0            [FIX_HI]           !Fix ? levels for HI
 0            [FIX_HYD]          !Fix ? levels for HII
@@ -275,17 +258,6 @@ F,F          [DIE_NkX]           !Include LTDR for NkX (Use WI calcs?)
 0            [FIX_FeIX]          !Fix ? levels for FeIX
 0            [FIX_FeX]           !Fix ? levels for FeX
 0            [FIX_IRON]          !Fix ? levels for FeXI
-
-0            [FIX_Nk2]           !Fix ? levels for Nk2
-0            [FIX_NkIII]         !Fix ? levels for NkIII
-0            [FIX_NkIV]          !Fix ? levels for NkIV
-0            [FIX_NkV]           !Fix ? levels for NkV
-0            [FIX_NkSIX]         !Fix ? levels for NkSIX
-0            [FIX_NkSEV]         !Fix ? levels for NkSEV
-0            [FIX_NkVIII]        !Fix ? levels for NkVIII
-0            [FIX_NkIX]          !Fix ? levels for NkIX
-0            [FIX_NkX]           !Fix ? levels for NkX
-0            [FIX_NICK]          !Fix ? levels for NkIX
 
 F            [FIX_NE]           !Fixed Electron density ?
 F            [FIX_IMP]          !Fix impurity species automatically ?
