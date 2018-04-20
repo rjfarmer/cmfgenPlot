@@ -210,6 +210,11 @@ F,F          [DIE_PIV]          !Include LTDR for PIV (Use WI calcs?)
 F,F          [DIE_PV]           !Include LTDR for PV (Use WI calcs?)
 F,F          [DIE_PPIX]         !Include LTDR for PPIX (Use WI calcs?)
 
+F,F          [DIE_SIII]          !Include LTDR for SIII (Use WI calcs?)
+F,F          [DIE_SIV]          !Include LTDR for SIV (Use WI calcs?)
+F,F          [DIE_SV]           !Include LTDR for SV (Use WI calcs?)
+F,F          [DIE_SSIX]         !Include LTDR for SSIX (Use WI calcs?)
+
 0            [FIX_HI]           !Fix ? levels for HI
 0            [FIX_HYD]          !Fix ? levels for HII
 
@@ -246,6 +251,12 @@ F,F          [DIE_PPIX]         !Include LTDR for PPIX (Use WI calcs?)
 0            [FIX_SkIV]         !Fix ? levels for SkIV
 0            [FIX_SkV]         !Fix ? levels for SkIV
 0            [FIX_SIL]          !Fix ? levels for SkV
+
+0            [FIX_SIII]          !Fix ? levels for SIII
+0            [FIX_SIV]          !Fix ? levels for SIV
+0            [FIX_SV]           !Fix ? levels for SV
+0            [FIX_SSIX]         !Fix ? levels for SSIX
+0            [FIX_SUL]          !Fix ? levels for SUL
 
 0            [FIX_FeI]           !Fix ? levels for FeI
 0            [FIX_Fe2]           !Fix ? levels for Fe2
