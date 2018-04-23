@@ -312,7 +312,8 @@ def vadat_mesa(filein='VADAT',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True):
 
     set_value('PHOS/X',oldv,-10**-15) # Cant be zero
     set_value('LIN_INT',oldv,'F')
-    set_value('DO_CL',oldv,'F')
+    set_value('DO_CL',oldv,'T')
+    set_value('T_INIT_TAU',oldv,'0.5')
 
     #Normalise
     abunSum=np.sum(abun)
@@ -372,7 +373,7 @@ def lte_mesa(filein='VADAT_MESA',log_fold='LOGS/',model=1,tau=2.0/3.0,save=True)
 
     ind_prof=np.argmin(np.abs(m.prof.tau-tau))
 
-    set_value('DO_CL',oldv,'F')
+    set_value('DO_CL',oldv,'T')
     set_value('LIN_INT',oldv,'F')
     set_value('T_INIT_TAU',oldv,'1.5')
 
