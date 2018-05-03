@@ -513,7 +513,7 @@ def make_exectuable(filename):
 def run_hydro(cmfgensrc):
     binary=os.path.join(cmfgensrc,'exe','wind_hyd.exe')
     proc = subprocess.Popen([binary],stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,universal_newlines=True)
-    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("","e","90","100"))
+    out,err = proc.communicate(input="{}\n{}\n{}\n{}\n".format("","e","100","100"))
 
 
 def run_cmfgen(cmfgensrc):
